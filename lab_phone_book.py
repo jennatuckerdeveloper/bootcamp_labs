@@ -1,3 +1,6 @@
+#come back and stylize the way the stuff prints
+#then do the advanced labs
+
 print("Welcome to your phonebook!")
 
 phonebook = {'Jen': {
@@ -20,10 +23,13 @@ def new_contact(name, number, relationship):
     new['number'] = number
     new['relationship'] = relationship
     phonebook[name] = new
-    print(new)
+    print('Name: ', new['name'], '\nNumber: ', new['number'], \
+        '\nRelationship: ', new['relationship'])
 
 def retrieve_contact(name):
-    print(phonebook[name])
+    contact = phonebook[name]
+    print('Name: ', contact['name'], '\nNumber: ', contact['number'], \
+        '\nRelationship: ', contact['relationship'])
 
 def remove_contact(name):
     del phonebook[name]
@@ -36,7 +42,9 @@ def change_contact(name, change, new):
         phonebook[name]['number'] = new
     elif change == 'relationship':
         phonebook[name]['relationship'] = new
-    print(phonebook[name])
+    contact = phonebook[name]
+    print('Name: ', contact['name'], '\nNumber: ', contact['number'], \
+        '\nRelationship: ', contact['relationship'])
 
 def run_phone_book():
     running = True
