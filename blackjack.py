@@ -1,10 +1,15 @@
+""" My game of blackjack.
+    Objects are used in later objects.
+    Somewhat complex pattern of interaction among parts.
+"""
 
 import random
 
+suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
+ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]
+
 class Card:
-    suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
-    ranks = ["2", "3", "4", "5", "6", "7", "8", "9",
-            "10", "Jack", "Queen", "King", "Ace"]
+
     def __init__(self, suit, rank):
         self.suit = suit
         self.rank = rank
@@ -14,6 +19,8 @@ class Card:
     def __repr__(self):
         #this is what the representation will be when it's in a list
         return self.__str__()
+    def call_rank(self):
+        return self.rank
 
 class Deck:
     def __init__(self):
@@ -37,8 +44,7 @@ class Deck:
         return self.cards.pop(0)
         #This is dealing a random card.
 class Hand:
-    scores: {2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 10, "Jack": 10,
-        "Queen": 10, "King": 10}
+
     def __init__(self):
         self.hand = []
     def __str__(self):
@@ -53,15 +59,46 @@ class Hand:
     def hit(self, deck):
         self.hand.append(deck.deal())
 
-#This is to make an Object using user inputs.  Assume they match.
-    def enter_hand(self, card):
-        card1 = input("Enter your card: ")
-            if card1 in self.cards:
-                self.hand.append(card1)
-        #I don't know if this works.
+#This is to make an Object using user inputs.  Assume they match the format.
+    def enter_hand(self, rank, suit):
+        new = Card(suit, rank)
+        self.hand.append(new)
 
-    def score_blackjack_hand(self, hand):
-        
+# new.enter_hand(input("Enter your card rank: "), input("Enter your card suit: "))
+# new.enter_hand(input("Enter your card rank: "), input("Enter your card suit: "))
+# print(new.hand)
 
 #Score a hand
 #with the Ace exception
+
+    def score_blackjack_hand(self):
+        scores = {'2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8,
+        '9': 9, '10': 10, "Jack": 10, "Queen": 10, "King": 10, "Ace": 1}
+        scoring = []
+        score = 0
+        for item in self.hand:
+            rank = item.call_rank()
+            if rank == "Ace":
+                scoring.append(rank)
+            else:
+                scoring.append(scores[rank])
+        for item in scoring:
+            if item != "Ace":
+                score += item
+            elif item == "Ace":
+                if score > 10:
+                    score += 1
+                else:
+                     score +=11
+        return score
+
+
+start = Deck()
+print(start)
+start.shuffle()
+print(start)
+new = Hand()
+new.new_hand(start)
+
+print(new)
+print(new.score_blackjack_hand())

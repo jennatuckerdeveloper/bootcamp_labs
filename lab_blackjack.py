@@ -1,3 +1,5 @@
+#a good example for a blackjack game from online
+
 import random
 
 suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
