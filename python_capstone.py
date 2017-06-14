@@ -31,10 +31,7 @@ Crossings / major decision points
 
 Map
 
-Game Play:
-1) Walk on.
-2) Lie down a while.
-3)
+
 
 The characters will be in the inventory.
 So a function should print the inventory items, perhaps not including the characters.
@@ -46,27 +43,50 @@ There should be a way to have things happen to all the characters in the invento
 Creates characters with their own names and health score.  
 """
 
+from random import choice
 
 class Character:
     def __init__(self, name, description=100):
         self.name = name
         self.description = description
+        self.type = "character"
     def __str__(self):
-        return "{} is at {} health.".format(self.name, self.description)
+        if 0 < self.description <= 25:
+            return "{} is in poor health.".format(self.name)
+        elif 26 <= self.description <= 50:
+            return "{} is in fair health.".format(self.name)
+        elif 51 <= self.description <= 75:
+            return "{} is in decent health.".format(self.name)
+        elif 76 <= self.description <= 100:
+            return "{} is in good health.".format(self.name)
     def __repr__(self):
-        return str(self)
+        return str(self.name)
     def die(self):
         if self.health <= 0:
             print("{} has died.".format(self.name))
             #The character is not yet removed from the player inventory.
 
-#There's probably a way to make the health/description print
-#A great, good, fair, poor, bad according to the number.
+class Item:
+    def __init__(self, name, description, type="item"):
+        self.name = name
+        self.description = description
+        self.type = type
+    def __str__(self):
+        return "{}: {}".format(self.name, self.description)
+    def __repr__(self):
+        return str(self.name)
+        #return self.__str__()
+
+class Food(Item):
+    def __init__(self):
+        # self.nutrition = 20
+        super().__init__(name="Food", description="A day's food for one person.", type="food")
+
 
 class Inventory:
-    def __init__(self):
+    def __init__(self, limit=None):
         self.inventory = []
-
+        self.limit = limit
 
     def get_item(self, item):
         self.inventory.append(item)
@@ -77,40 +97,29 @@ class Inventory:
         source.inventory.pop(choice)
         self.get_item(item)
 
-
     def list_inventory(self):
+        print(self.inventory)
         for each in self.inventory:
-            print(each.name, each.description)
+            print(each)
 
-    def look(self):
-        pass
+
+    # def random_find(self):
+    #     finds = {"camp": Food(), "empty hotel": Item("Gideon Bible"), "backpack": Item("cd")}
+    #     find = choice(finds)
+    #     return find
 
     """
     There will be one player inventory.
-    There will be place inventories.  
-    There will be "random" inventories.  
+    There will be a handful of larger place inventories.  
+    There will be many small "random" inventories.  
     """
-
-
-class Item:
-    def __init__(self, name, description, type):
+class Place:
+    def __init__(self, name):
+        places = {"camp": "a camp", "hotel": "a hotel", "pack": "a pack"}
+        finds = {"camp": Food(), "hotel": Item("bible", "a Gideon Bible"), "pack": Item("cd", "a cd")}
         self.name = name
-        self.description = description
-        self.type = type
+        self.description = places[name]
+        self.finds = finds[name]
+
     def __str__(self):
-        return "{}: {}".format(self.name, self.description)
-    def __repr__(self):
-        return str(self)
-
-class Food(Item):
-    def __init__(self):
-        self.nutrition = 20
-        super().__init__(name="Food", description="A day's food for one person.", type="food")
-
-#There might be a way to add the nutrition perameter to any
-#item created that has the name "Food" and no others.
-
-
-
-
-
+        return "You come across a {} and find: \n{}".format(self.description, self.finds.description)
