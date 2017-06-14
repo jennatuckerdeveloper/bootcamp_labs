@@ -26,9 +26,6 @@ player_inventory.get_item(name3)
 player_inventory.get_item(name4)
 player_inventory.get_item(name5)
 
-#The player's initial inventory should have a limit on items.
-#Choose 3 different limits based on 3 character profiles to create levels of difficulty.
-#The food items in the inventory should add up to a score.
 
 """
 Creates an initial inventory to use in loading player inventory.
@@ -119,25 +116,45 @@ while True:
         print("{} days on the trail.  {} miles covered.".format(day_counter, mile_counter))
         for i in player_inventory.inventory:
             if i.type == "character":
-                if i.description > 15:
-                    i.description -= 5
+                i.description -= 5
 
-        eaten = 5
-        if any(x.type == "food" for x in player_inventory.inventory):
-            while eaten > 0:
-                temp = []
-                for i in player_inventory.inventory:
-                    if i.type == "food":
-                        temp.append(i)
-                for i in temp:
-                    player_inventory.inventory.remove(i)
-                eaten -= 1
+        # eaten = 5
+        # if any(x.type == "food" for x in player_inventory.inventory):
+        #     while eaten > 0:
+        #         temp = []
+        #         for i in player_inventory.inventory:
+        #             if i.type == "food":
+        #                 temp.append(i)
+        #         for i in temp:
+        #             player_inventory.inventory.remove(i)
+        #         eaten -= 1
+
+        for x in player_inventory.inventory:
+            if x.type == "food":
+                player_inventory.inventory.remove(x)
+                break
+
         else:
             print("You have run out of food.")
             for i in player_inventory.inventory:
                 if i.type == "character":
                     i.description -= 20
-        #what happens if you run out of food?
+                    print(i.description)
+
+        if any(x.type == "character" for x in player_inventory.inventory):
+            temp = []
+            for i in player_inventory.inventory:
+                if i.type == "character":
+                    temp.append(i)
+            for i in temp:
+                if i.description <= 0:
+                    player_inventory.inventory.remove(i)
+                    print("{} has died of hunger and exhaustion.".format(i.name))
+
+        if not any(x.type == "character" for x in player_inventory.inventory):
+                print("Your team has died.")
+                quit()
+
         #add random experiences
 
     elif play == "2":
@@ -154,14 +171,44 @@ while True:
         find = Place(choice(places))
         print(find)
 
-        #this should only work once per day
+        decision = input("Do you want to take what you found? ")
+        if decision == "y":
+             player_inventory.pack_item(find.inventory, find.finds)
+        else:
+            continue
+
+        #this should have a limit. How to do this?
 
     elif play == "4":
         player_inventory.list_inventory()
 
     elif play == "5":
         pass
-    #map goes last with other graphics
+        #map goes last along with other graphics
 
     elif play == "6":
          quit()
+
+
+# noinspection PyUnreachableCode
+""" 
+
+Finish building out the initial inventory. 
+Allow user to choose what to pack.  
+
+Put limit on player_inventory.  
+Build 3 versions of play with profiles. 
+
+Build random experiences into days.
+  one that affects one character
+  one that affects all characters
+  one that affects other items in inventory 
+  check bags and auto-play outcomes 
+For this, I could build a class called Loss with 3 sub-types.
+    makes a list of characters, chooses random, affects
+    affects all characters
+    makes list of food items, deletes two 
+    
+Create "milestones" reached that trigger parts of gameplay.
+Build any larger places / inventories.
+"""
