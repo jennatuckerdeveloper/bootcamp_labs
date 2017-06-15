@@ -201,7 +201,7 @@ while True:
 
         if luck == 3:
             happening = Occurrence(player_inventory)
-
+            happening.rain()
         """
         Milestones reached with unique gameplay sections:  
         """
