@@ -1,5 +1,10 @@
-from random import choice
+from python_capstone import Occurence, Inventory, Item, Character
 
-this = [1, 2, 3, 4]
+inv = Inventory()
+inv.get_item(Character("You"))
 
-print(choice(this))
+
+inv.list_inventory()
+
+loss = Occurence(inv)
+loss.depression()

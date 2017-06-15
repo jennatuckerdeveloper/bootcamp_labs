@@ -25,3 +25,13 @@
 # Team(team)
 # print(team.people)
 
+# eaten = 5
+# if any(x.type == "food" for x in player_inventory.inventory):
+#     while eaten > 0:
+#         temp = []
+#         for i in player_inventory.inventory:
+#             if i.type == "food":
+#                 temp.append(i)
+#         for i in temp:
+#             player_inventory.inventory.remove(i)
+#         eaten -= 1

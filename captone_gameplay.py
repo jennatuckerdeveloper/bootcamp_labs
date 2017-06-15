@@ -1,5 +1,5 @@
-from python_capstone import Character, Item, Food, Inventory, Place
-from random import randrange, choice
+from python_capstone import Character, Item, Food, Inventory, Place, Occurrence
+from random import randrange, choice, randint
 
 """
 Game play:
@@ -7,18 +7,39 @@ Game play:
 
 print("Welcome to PDX Trail!")
 
-name1 = Character(input("Choose a character name: "))
+difficulty = input(   """
+                            You will lead a team of five to Portland.
+                            Do you want to be:
+                            1.  A homesteader with a packing lama.  
+                            2.  A former tech worker with lots of camping gear.
+                            3.  A confident person with scavenged gear.  
+                            """)
+
+"""
+Limits inventory and sets difficulty level.  
+Includes 5 spaces for characters.  
+"""
+
+if difficulty == "1":
+    player_inventory = Inventory(19)
+elif difficulty == "2":
+    player_inventory = Inventory(15)
+elif difficulty == "3":
+    player_inventory = Inventory(11)
+
+print("You will lead your team.")
+name1 = Character("You")
 name2 = Character(input("Choose a second character name: "))
 name3 = Character(input("Choose a third character name: "))
 name4 = Character(input("Choose a fourth character name: "))
 name5 = Character(input("Choose a fifth character name: "))
 
+print("\n")
+
 """
 Instantiates an inventory for the player.
 Loads the 5 characters into the inventory.
 """
-
-player_inventory = Inventory()
 
 player_inventory.get_item(name1)
 player_inventory.get_item(name2)
@@ -31,28 +52,50 @@ player_inventory.get_item(name5)
 Creates an initial inventory to use in loading player inventory.
 """
 
-print("Before you head out, choose what you will bring: ")
+print("Before you head out, you have to decide what to bring. \n")
 
 initial_inventory = Inventory()
 food = Food()
-initial_inventory.get_item(food)
-initial_inventory.get_item(food)
-initial_inventory.get_item(food)
-initial_inventory.get_item(food)
-initial_inventory.get_item(food)
-initial_inventory.get_item(food)
+cd = Item("cd", "a cd")
+energy = Item("solar panel", "a solar panel")
+
+food_stores = 0
+while food_stores <= 10:
+    food = Food()
+    initial_inventory.get_item(food)
+    food_stores += 1
+
+initial_inventory.get_item(energy)
+initial_inventory.get_item(cd)
+
+print("You have the following stores to choose from: ")
 initial_inventory.list_inventory()
+print("\n")
 
 
+while True:
+    print("Your pack has: ")
+    for i in player_inventory.inventory:
+        if i.type != "character":
+            print(i)
+    try:
+        item = input("What do you want to pack? \nEnter 2 to unpack an item. \nEnter item or 'exit' to depart: ")
+        player_inventory.pack_item(initial_inventory, item)
+    except ValueError:
+        continue
+    if item == "2":
+        try:
+            item = input("What do you want to unpack? ")
+            initial_inventory.pack_item(player_inventory, item)
+        except ValueError:
+            continue
+    if item == "exit":
+        ready = input("Are you ready to depart? y/n? ")
+        if ready == "n":
+            continue
+        if ready == "y":
+            break
 
-player_inventory.pack_item(initial_inventory, food)
-player_inventory.pack_item(initial_inventory, food)
-player_inventory.pack_item(initial_inventory, food)
-player_inventory.pack_item(initial_inventory, food)
-player_inventory.pack_item(initial_inventory, food)
-player_inventory.pack_item(initial_inventory, food)
-player_inventory.list_inventory()
-initial_inventory.list_inventory()
 
 """
 How do I set a limit on a list to limit an inventory?  
@@ -118,16 +161,6 @@ while True:
             if i.type == "character":
                 i.description -= 5
 
-        # eaten = 5
-        # if any(x.type == "food" for x in player_inventory.inventory):
-        #     while eaten > 0:
-        #         temp = []
-        #         for i in player_inventory.inventory:
-        #             if i.type == "food":
-        #                 temp.append(i)
-        #         for i in temp:
-        #             player_inventory.inventory.remove(i)
-        #         eaten -= 1
 
         for x in player_inventory.inventory:
             if x.type == "food":
@@ -150,12 +183,30 @@ while True:
                 if i.description <= 0:
                     player_inventory.inventory.remove(i)
                     print("{} has died of hunger and exhaustion.".format(i.name))
+                    player_inventory.limit -= 1
 
         if not any(x.type == "character" for x in player_inventory.inventory):
                 print("Your team has died.")
                 quit()
 
-        #add random experiences
+        luck = randint(1, 20)
+
+        if luck == 1:
+            happening = Occurrence(player_inventory)
+            happening.theft()
+
+        if luck == 2:
+            happening = Occurrence(player_inventory)
+            happening.depression()
+
+        if luck == 3:
+            happening = Occurrence(player_inventory)
+
+        """
+        Milestones reached with unique gameplay sections:  
+        """
+        if mile_counter >= 123:
+            print("You have reached Eugene. ")
 
     elif play == "2":
         days = input("How many days do you want to rest? ")
@@ -164,6 +215,8 @@ while True:
             if i.type == "character":
                 if i.description < 100:
                     i.description += (20 * int(days))
+                if i.description > 100:
+                    i.description = 100
 
     elif play == "3":
         places = ["camp", "hotel", "pack"]
@@ -177,7 +230,7 @@ while True:
         else:
             continue
 
-        #this should have a limit. How to do this?
+        #How can I limit the number of time this can be done in a row?
 
     elif play == "4":
         player_inventory.list_inventory()
@@ -191,24 +244,14 @@ while True:
 
 
 # noinspection PyUnreachableCode
+
 """ 
-
-Finish building out the initial inventory. 
-Allow user to choose what to pack.  
-
-Put limit on player_inventory.  
-Build 3 versions of play with profiles. 
-
-Build random experiences into days.
-  one that affects one character
-  one that affects all characters
-  one that affects other items in inventory 
-  check bags and auto-play outcomes 
-For this, I could build a class called Loss with 3 sub-types.
-    makes a list of characters, chooses random, affects
-    affects all characters
-    makes list of food items, deletes two 
-    
-Create "milestones" reached that trigger parts of gameplay.
 Build any larger places / inventories.
+
+Remove a day's food for every rest day. Or every 2 days.  
+
+Build out appearance.
+Build out 
+
 """
+
