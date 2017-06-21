@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8"/>
+    <title>CSS Layout</title>
+    <meta name="Author" content="Chelsea Dover"/>
+    <style>
+		main {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			flex-wrap:wrap;
+		}
+
+		main div {
+			flex-grow: 1;
+			flex-shrink: 1;
+		}
+
+		main div:nth-child(1) {
+			order: 1;
+			align-self: flex-end;
+		}
+		main div:nth-child(2) {
+			order: 2;
+			flex-basis: 150px;
+		}
+	</style>
+</head>
+
+<body>
+    <main>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+    </main>
+</body>
+</html>

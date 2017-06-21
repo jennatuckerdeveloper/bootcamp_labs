@@ -1,0 +1,275 @@
+
+
+
+    <style>
+    @import url('https://fonts.googleapis.com/css?family=Calligraffitti%7CShadows+Into+Light');
+    body {
+        background-image: url(http://up209d.github.io/LastAssignment/project/assets/images/paper.png);
+	    font-family: 'Shadows Into Light', cursive;
+        font-size: 18pt;
+        }
+
+    header:before {
+        content: " ";
+        background: url(http://i.imgur.com/0MCCdUI.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        position: absolute;
+        width: 200px;
+        height: 40%;
+        left: 37.5%;
+        top: 30%;
+    }
+
+
+    header {
+        position: relative;
+        padding-top: 200px;
+        margin-top: 200px;
+    }
+
+    .preamble h3 {
+        background:url(https://s3.amazonaws.com/piktochartv2-dev/v2/uploads/0e5c8081-7147-417b-9b3c-0ac315f4c8cf/d754b36dd742d67daf4a4a76cb865122e2f79bac_original.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        padding: 150px;
+        background-position: center;
+        text-align: center;
+
+    }
+
+        header, footer, .summary {
+            text-align: center;
+        }
+
+
+        h2 span, footer span {
+            position: relative;
+        }
+
+        h2 span:before, h2 span:after, footer span:after, footer span:before {
+            content: " ";
+            border-bottom: 1px solid black;
+            height: 5px;
+            width: 100px;
+            position: absolute;
+            top: 50%;
+        }
+
+        h2 span:before, footer span:before {
+            right: 100%;
+            margin-right: 15px;
+        }
+
+        h2 span:after, footer span:after {
+            left: 100%;
+            margin-left: 15px;
+        }
+
+        .main-wrapper {
+            width: 75%;
+            margin-left: 240px;
+        }
+
+        .sidebar {
+            font-family: 'Shadows Into Light', cursive;
+            position: absolute;
+            top: 0;
+            width: 200px;
+            padding: 0 20px;
+            font-size: 18pt
+        }
+
+        a {
+            color: #b97c7e;
+            text-decoration: none;
+        }
+
+        /*.supporting {*/
+            /*margin: 240px;*/
+        /*}*/
+
+        #zen-supporting {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+
+        }
+
+        #zen-supporting div:nth-child(1) {
+            flex-basis: 40%;
+            padding: 20px;
+        }
+
+        #zen-supporting div:nth-child(2) {
+            flex-basis: 40%;
+            padding: 20px;
+        }
+
+
+
+    </style>
+
+	<div class="page-wrapper">
+		<div class="main-wrapper">
+
+		<section class="intro" id="zen-intro">
+			<header class="banner">
+				<h1>CSS Zen Garden</h1>
+				<h2><span>The Beauty of CSS Design</span></h2>
+			</header>
+
+			<div class="summary" id="zen-summary">
+				<p>A demonstration of what can be accomplished through CSS-based design. Select any style sheet from the list to load it into this page.</p>
+				<p>Download the example
+					<a href="/examples/index" title="This page's source HTML code, not to be modified.">
+                        html file
+                    </a> and
+					<a href="/examples/style.css" title="This page's sample CSS, the file you may modify.">css file
+                    </a>
+				</p>
+			</div>
+
+			<div class="preamble" id="zen-preamble">
+				<h3>The Road to Enlightenment</h3>
+				<p>Littering a dark and dreary road lay the past relics of browser-specific tags, incompatible DOMs, broken CSS support, and abandoned browsers.</p>
+				<p>We must clear the mind of the past. Web enlightenment has been achieved thanks to the tireless efforts of folk like the W3C, WaSP, and the major browser creators.</p>
+				<p>The CSS Zen Garden invites you to relax and meditate on the important lessons of the masters. Begin to see with clarity. Learn to use the time-honored techniques in new and invigorating fashion. Become one with the web.</p>
+			</div>
+		</section>
+
+		<div class="main supporting" id="zen-supporting">
+			<div class="explanation" id="zen-explanation">
+				<h3>So What is This About?</h3>
+				<p>There is a continuing need to show the power of CSS. The Zen Garden aims to excite, inspire, and encourage participation. To begin, view some of the existing designs in the list. Clicking on any one will load the style sheet into this very page. The
+					HTML remains the same, the only thing that has changed is the external CSS file. Yes, really.</p>
+				<p>CSS allows complete and total control over the style of a hypertext document. The only way this can be illustrated in a way that gets people excited is by demonstrating what it can truly be, once the reins are placed in the hands of those able to
+					create beauty from structure. Designers and coders alike have contributed to the beauty of the web; we can always push it further.</p>
+			</div>
+
+			<div class="participation" id="zen-participation">
+				<h3>Participation</h3>
+				<p>Strong visual design has always been our focus. You are modifying this page, so strong CSS skills are necessary too, but the example files are commented well enough that even CSS novices can use them as starting points. Please see the <a href="http://www.mezzoblue.com/zengarden/resources/">CSS Resource Guide</a>					for advanced tutorials and tips on working with CSS.</p>
+				<p>You may modify the style sheet in any way you wish, but not the HTML. This may seem daunting at first if you've never worked this way before, but follow the listed links to learn more, and use the sample files as a guide.</p>
+				<p>Download the sample <a href="/examples/index">HTML</a> and <a href="/examples/style.css">CSS</a> to work on a copy locally. Once you have completed your masterpiece (and please, don't submit half-finished work) upload your CSS file to a web server
+					under your control. <a href="http://www.mezzoblue.com/zengarden/submit/">Send us a link</a> to an archive of that file and all associated assets, and if we choose to use it we will download it and place it on our server.</p>
+			</div>
+
+			<div class="benefits" id="zen-benefits">
+				<h3>Benefits</h3>
+				<p>Why participate? For recognition, inspiration, and a resource we can all refer to showing people how amazing CSS really can be. This site serves as equal parts inspiration for those working on the web today, learning tool for those who will be tomorrow,
+					and gallery of future techniques we can all look forward to.</p>
+			</div>
+
+			<div class="requirements" id="zen-requirements">
+				<h3>Requirements</h3>
+				<p>Where possible, we would like to see mostly CSS 1 & 2 usage. CSS 3 & 4 should be limited to widely-supported elements only, or strong fallbacks should be provided. The CSS Zen Garden is about functional, practical CSS and not the latest bleeding-edge
+					tricks viewable by 2% of the browsing public. The only real requirement we have is that your CSS validates.</p>
+				<p>Luckily, designing this way shows how well various browsers have implemented CSS by now. When sticking to the guidelines you should see fairly consistent results across most modern browsers. Due to the sheer number of user agents on the web these
+					days - especially when you factor in mobile - pixel-perfect layouts may not be possible across every platform. That's okay, but do test in as many as you can. Your design should work in at least IE9+ and the latest Chrome, Firefox, iOS and Android
+					browsers (run by over 90% of the population).</p>
+				<p>We ask that you submit original artwork. Please respect copyright laws. Please keep objectionable material to a minimum, and try to incorporate unique and interesting visual themes to your work. We're well past the point of needing another garden-related
+					design.</p>
+				<p>This is a learning exercise as well as a demonstration. You retain full copyright on your graphics (with limited exceptions, see <a href="http://www.mezzoblue.com/zengarden/submit/guidelines/">submission guidelines</a>), but we ask you release your
+					CSS under a Creative Commons license identical to the <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">one on this site</a> so that others may learn from your work.</p>
+				<p>By <a href="http://www.mezzoblue.com/">Dave Shea</a>. Bandwidth graciously donated by <a href="http://www.mediatemple.net/">mediatemple</a>. Now available: <a href="http://www.amazon.com/exec/obidos/ASIN/0321303474/mezzoblue-20/">Zen Garden, the book</a>.</p>
+			</div>
+		</div>
+
+		<footer>
+			<span>
+				<a href="http://validator.w3.org/check/referer" class="zen-validate-html">HTML</a>
+				<a href="http://jigsaw.w3.org/css-validator/check/referer" class="zen-validate-css">CSS</a>
+				<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/" class="zen-license">CC</a>
+				<a href="http://mezzoblue.com/zengarden/faq/#aaa" class="zen-accessibility">A11y</a>
+				<a href="https://github.com/mezzoblue/csszengarden.com" class="zen-github">GH</a>
+				</span>
+			</footer>
+		</div>
+
+
+		<aside class="sidebar" role="complementary">
+			<div class="wrapper">
+
+				<div class="design-selection" id="design-selection">
+					<h3 class="select">Select a Design:</h3>
+					<nav role="navigation">
+						<ul>
+							<li>
+								<a href="/221/" class="design-name">Mid Century Modern</a> by <a href="http://andrewlohman.com/" class="designer-name">Andrew Lohman</a>
+							</li>
+							<li>
+								<a href="/220/" class="design-name">Garments</a> by <a href="http://danielmall.com/" class="designer-name">Dan Mall</a>
+							</li>
+							<li>
+								<a href="/219/" class="design-name">Steel</a> by <a href="http://steffen-knoeller.de" class="designer-name">Steffen Knoeller</a>
+							</li>
+							<li>
+								<a href="/218/" class="design-name">Apothecary</a> by <a href="http://trentwalton.com" class="designer-name">Trent Walton</a>
+							</li>
+							<li>
+								<a href="/217/" class="design-name">Screen Filler</a> by <a href="http://elliotjaystocks.com/" class="designer-name">Elliot Jay Stocks</a>
+							</li>
+							<li>
+								<a href="/216/" class="design-name">Fountain Kiss</a> by <a href="http://jeremycarlson.com" class="designer-name">Jeremy Carlson</a>
+							</li>
+							<li>
+								<a href="/215/" class="design-name">A Robot Named Jimmy</a> by <a href="http://meltmedia.com/" class="designer-name">meltmedia</a>
+							</li>
+							<li>
+								<a href="/214/" class="design-name">Verde Moderna</a> by <a href="http://www.mezzoblue.com/" class="designer-name">Dave Shea</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+
+				<div class="design-archives" id="design-archives">
+					<h3 class="archives">Archives:</h3>
+					<nav>
+						<ul>
+							<li class="next">
+								<a href="/214/page1">
+								Next Designs <span class="indicator">&rsaquo;</span>
+							</a>
+							</li>
+							<li class="viewall">
+								<a href="http://www.mezzoblue.com/zengarden/alldesigns/">
+								View All Designs							</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+
+				<div class="zen-resources" id="zen-resources">
+					<h3 class="resources">Resources:</h3>
+					<ul>
+						<li class="view-css">
+							<a href="style.css">
+							View This Design's CSS</a>
+						</li>
+						<li class="css-resources">
+							<a href="http://www.mezzoblue.com/zengarden/resources/" title="Links to great sites with information on using CSS.">
+							CSS Resources	</a>
+						</li>
+						<li class="zen-faq">
+							<a href="http://www.mezzoblue.com/zengarden/faq/">
+								<abbr title="Frequently Asked Questions">FAQ</abbr> </a>
+						</li>
+						<li class="zen-submit">
+							<a href="http://www.mezzoblue.com/zengarden/submit/">
+							Submit a Design						</a>
+						</li>
+						<li class="zen-translations">
+							<a href="http://www.mezzoblue.com/zengarden/translations/">
+							Translations						</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</aside>
+
+
+	</div>
+<!-- </body>
+
+</html> -->
