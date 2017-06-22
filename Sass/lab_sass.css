@@ -1,22 +1,33 @@
+@keyframes AnimationName {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 50%; }
+  100% {
+    background-position: 0% 50%; } }
 header {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  background: blue;
   width: 100%;
   height: 60vw;
   text-align: center;
-  color: #fff; }
+  color: #fff;
+  background: linear-gradient(270deg, #2196f3, #9c27b0);
+  background-size: 400% 400%;
+  animation: AnimationName 10s infinite; }
 
 footer {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  background: blue;
   width: 100%;
   height: 40vw;
   text-align: center;
-  color: #fff; }
+  color: #fff;
+  background: linear-gradient(270deg, #9c27b0, #2196f3);
+  background-size: 400% 400%;
+  animation: AnimationName 10s infinite; }
 
 .project-list h2 {
   text-align: center; }
@@ -63,12 +74,14 @@ section.project-list ul li {
   width: 10em;
   height: 7em; }
 
-section.articles {
+article, section.articles div {
   background: #efefef;
   height: 100%;
   width: 70vw;
   border-radius: 5%;
   margin: auto;
-  margin-bottom: 20px; }
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding: 10px; }
 
 /*# sourceMappingURL=lab_sass.css.map */
