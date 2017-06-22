@@ -1,0 +1,74 @@
+header {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background: blue;
+  width: 100%;
+  height: 60vw;
+  text-align: center;
+  color: #fff; }
+
+footer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background: blue;
+  width: 100%;
+  height: 40vw;
+  text-align: center;
+  color: #fff; }
+
+.project-list h2 {
+  text-align: center; }
+
+section.project-list {
+  background: #efefef;
+  height: 300px;
+  width: 70vw;
+  border-radius: 5%;
+  margin: auto; }
+
+.project-list div {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px; }
+
+.project-list div h2 {
+  margin-top: 50px; }
+
+section.project-list ul {
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+  list-style: none; }
+
+section.project-list ul li {
+  border: solid 3px; }
+
+.project-list li:nth-child(1) {
+  background: url("https://visualhunt.com/photos/xl/7/flower-bouquet-bunch-daisys.jpg") center;
+  background-size: cover;
+  width: 10em;
+  height: 7em; }
+
+.project-list li:nth-child(2) {
+  background: url("https://visualhunt.com/photos/l/7/sky-silhouette-star.jpg") center;
+  background-size: cover;
+  width: 10em;
+  height: 7em; }
+
+.project-list li:nth-child(3) {
+  background: url("https://visualhunt.com/photos/l/7/animal-kitten-pet.jpg") center;
+  background-size: cover;
+  width: 10em;
+  height: 7em; }
+
+section.articles {
+  background: #efefef;
+  height: 100%;
+  width: 70vw;
+  border-radius: 5%;
+  margin: auto;
+  margin-bottom: 20px; }
+
+/*# sourceMappingURL=lab_sass.css.map */

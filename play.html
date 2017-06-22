@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+
+<head>
+
+    <style>
+
+       body {
+           background-color: grey;
+       }
+
+        div {
+            width: 400px;
+            height: 400px;
+        }
+
+        #squares {
+            display: flex;
+            flex-direction: row;
+        }
+
+        #circles {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .squares {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            /*padding: 40px;*/
+            margin: 10px;
+            border: solid 20px;
+            border-color: black;
+        }
+
+
+        #special {
+      	    background:#fff;
+	        height:0;
+	        width:0;
+            border-right: 100px solid blue;
+            border-bottom: 100px solid green;
+            border-top: 100px solid yellow;
+            border-left:100px solid red;
+        }
+
+        .circles {
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+            background-color: blue;
+            margin: 40px;
+            border: solid 20px;
+            border-color: yellow;
+            padding: 20px;
+        }
+
+        #tiny {
+             border-radius: 50%;
+             width: 20px;
+             height: 20px;
+             background-color: black;
+             border: solid 5px;
+             border-color: orange;
+             padding: 20px;
+             color: white;
+             margin: 10px;
+             /*transform: translate(100px 100px);*/
+             /*position: relative;*/
+             /*left: 50%;*/
+             /*top: 120px;*/
+
+         }
+
+        /*relative is relative to its own absolute position */
+            /*transform(45degrees)*/
+            /*transform: translate(10px)*/
+            /**/
+
+    </style>
+    <body>
+    <section id="squares">
+        <div class = "squares">
+            <p>Hello!</p>
+        </div>
+
+        <div class="squares">
+
+        </div>
+
+        <div class="squares" id="special">
+
+        </div>
+    </section>
+    <section id="circles">
+        <div class = "circles">
+            <div id="tiny">HI!</div><div id="tiny">Hello</div>
+        </div>
+        <div class="circles">
+
+        </div>
+    </section>
+
+    </div>
+    </body>
+
+</head>
+
+</html>
+

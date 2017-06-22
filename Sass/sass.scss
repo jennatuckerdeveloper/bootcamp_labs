@@ -1,0 +1,113 @@
+@import "variables";
+
+
+
+@mixin myAwesomeMixin() {
+  background: $mainColor;
+  border: dashed 2px;
+  font-size: 2em;
+}
+
+div {
+  @include myAwesomeMixin();
+  background: red;
+}
+
+  @mixin myAAwesomeMixin($color, $sizeOfFont) {
+    background: $color;
+    border: dashed 2px;
+    font-size: $sizeOfFont;
+  }
+
+  div aside {
+    @include myAAwesomeMixin(green, 18pt);
+    background: green;
+  }
+
+  div aside blockquote {
+    font-size: 16pt;
+  }
+
+  //Nesting or inheritance.
+  div {
+    background: red;
+    border: solid;
+    aside {
+      background: green;
+      blockquote {
+        background: blue;
+      }
+    }
+  }
+
+  //extend or inheritance
+
+  section {
+    @extend div;
+    padding: 20px;
+    margin: 20px;
+    background: green;
+    &:hover {
+      border: solid 20px;
+    &:visited {
+        background: blue;
+      }
+    }
+  }
+
+
+
+  img {
+    width: 75%;
+  }
+
+  //built-in functions in SASS
+  // color functions
+  // single line comments don't show up in compiled version
+  // multi line comments do /* stuff */
+  // single line comments are not supported in CSS
+
+  div {
+    background: darken($mainColor, 40%);
+    border: solid rgba($mainColor, 0.5);
+    color: fade_out($mainColor, 0.5);
+  }
+  aside {
+    background: green;
+  }
+  &:hover {
+    background: lighten(green, 20%)
+  }
+  blockquote {
+    background: blue;
+  }
+
+  //funcitions
+
+  @function sizeMaker($target, $container) {
+    @return ($target/$container)
+  }
+
+
+  @for $i from 1 through length($contentlist) {
+    li:nth-child(#{$i}) {
+      background: nth($contentlist, $i);
+    }
+  }
+
+@each $x in map_keys($mymap) {
+  .while-#{$x} {
+    width: map_get($myMap, $x)
+  }
+}
+
+@while $numType > 0 {
+  div:nth-child(#{$numType}) {
+    width: percentage($numType);
+  }
+  $numType: $numType - 1
+}
+
+//the # means that you're using a changing variable, not fixed
+// maps are similar to dictionaries
+//all list functions can apply to a map but not vice-versa
