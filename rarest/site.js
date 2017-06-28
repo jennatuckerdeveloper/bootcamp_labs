@@ -10,6 +10,7 @@ var namesToAges = {
     'Stef': 22
 };
 
+
 function findRarestValue(jsObj) {
     var freq = {};
     for (var i in namesToAges) {
@@ -29,4 +30,16 @@ function findRarestValue(jsObj) {
 
 }
 
-console.log(findRarestValue(namesToAges));
+function findRarestExamples(jsObj) {
+    var ages = [];
+    var age = parseInt(findRarestValue(jsObj));
+    for (var key in namesToAges) {
+        if (namesToAges[key] === age) {
+            ages.push(key)
+        }
+    }
+    return ages
+}
+
+
+console.log(findRarestExamples(namesToAges));
