@@ -1,0 +1,23 @@
+#back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 550px;
+    height: 600px;
+    background-color: palegreen;
+}
+
+#ground {
+    display: flex;
+    flex-wrap: wrap;
+    width: 500px;
+    height: 500px;
+    background-color: green;
+}
+
+img {
+    width: 125px;
+    height: 125px;
+
+}
+

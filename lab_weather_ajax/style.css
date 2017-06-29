@@ -1,0 +1,12 @@
+#icon img {
+    height: 50px;
+    width: 50px;
+}
+
+#content {
+    height: 500px;
+    width: 500px;
+    background-color: gray;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

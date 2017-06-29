@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Whack a Mole</title>
+    <style>
+        #container {
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        #buttons {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <h1>Stop Watch</h1>
+    <span id="timer">
+        -
+    </span>
+    <div id="buttons">
+        <div>
+            <button id="start">Start</button>
+        </div>
+        <div>
+            <button id="stop">Stop</button>
+        </div>
+        <div>
+            <button id="reset">Reset</button>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    var t = 0;
+    var inter = 1000;
+    var timer;
+
+    $('#start').click(function () {
+        timer = setInterval(function () {
+            console.log(t);
+            $('#timer').html(t);
+            t += 1;
+        }, inter)
+    });
+
+    $('#stop').click(function () {
+        clearInterval(timer);
+    });
+
+    $('#reset').click(function () {
+        clearInterval(timer);
+        t = 0;
+        $('#timer').html('-');
+    })
+</script>
+</body>
+</html>
