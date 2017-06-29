@@ -86,6 +86,10 @@ function searchWeatherZ() {
                 $('#content').css('background-image', 'url(' + "700.jpg" + ')');
             }
             $('#returns').html(data.weather[0].main);
+            var temp = data.main.temp;
+            var far = temp * 9/5 - 459.67;
+            var cel = temp = temp - 273.15;
+            $('#temp').html(far + ' degrees F').append('<br>', cel, ' degrees C');
         }
     });
 }

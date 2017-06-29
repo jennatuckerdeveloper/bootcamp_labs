@@ -2,34 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d724f0ce-3674-4ee5-86dc-2c494a467b3e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/200.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/200.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/300.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/300400.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/500.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/600.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/600.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/700.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/700.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/800.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/800.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/801.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/802.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/8034.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lab_weather_ajax/80x.jpg" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/angry_dice_jquery/angry_dice_jquery.js" afterPath="$PROJECT_DIR$/angry_dice_jquery/angry_dice_jquery.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/angry_dice_jquery/index.html" afterPath="$PROJECT_DIR$/angry_dice_jquery/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lab_weather_ajax/ajax_lab.js" afterPath="$PROJECT_DIR$/lab_weather_ajax/ajax_lab.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lab_weather_ajax/index.html" afterPath="$PROJECT_DIR$/lab_weather_ajax/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lab_weather_ajax/style.css" afterPath="$PROJECT_DIR$/lab_weather_ajax/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stopwatch/index.html" afterPath="$PROJECT_DIR$/stopwatch/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/to_do/index.html" afterPath="$PROJECT_DIR$/to_do/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/to_do/scripts.js" afterPath="$PROJECT_DIR$/to_do/scripts.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/to_do/style.css" afterPath="$PROJECT_DIR$/to_do/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wack-a-mole/index.html" afterPath="$PROJECT_DIR$/wack-a-mole/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wack-a-mole/scripts.js" afterPath="$PROJECT_DIR$/wack-a-mole/scripts.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wack-a-mole/style.css" afterPath="$PROJECT_DIR$/wack-a-mole/style.css" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -45,46 +20,28 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.6496">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="ajax_lab.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/lab_weather_ajax/ajax_lab.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="545">
-                  <caret line="86" column="13" lean-forward="false" selection-start-line="86" selection-start-column="13" selection-end-line="86" selection-end-column="13" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/lab_weather_ajax/index.html">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="330">
-                  <caret line="22" column="22" lean-forward="true" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="style.css" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/lab_weather_ajax/style.css">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="165">
-                  <caret line="11" column="1" lean-forward="false" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="ajax_lab.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lab_weather_ajax/ajax_lab.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="431">
+              <caret line="91" column="31" lean-forward="false" selection-start-line="91" selection-start-column="31" selection-end-line="91" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/lab_weather_ajax/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="17" lean-forward="false" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -136,8 +93,8 @@
         <option value="$PROJECT_DIR$/stopwatch/scripts.js" />
         <option value="$PROJECT_DIR$/stopwatch/index.html" />
         <option value="$PROJECT_DIR$/wack-a-mole/scripts.js" />
-        <option value="$PROJECT_DIR$/lab_weather_ajax/index.html" />
         <option value="$PROJECT_DIR$/lab_weather_ajax/style.css" />
+        <option value="$PROJECT_DIR$/lab_weather_ajax/index.html" />
         <option value="$PROJECT_DIR$/lab_weather_ajax/ajax_lab.js" />
       </list>
     </option>
@@ -149,8 +106,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="158" />
-    <option name="y" value="23" />
+    <option name="x" value="94" />
+    <option name="y" value="28" />
     <option name="width" value="1419" />
     <option name="height" value="796" />
   </component>
@@ -169,8 +126,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -180,20 +137,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="labs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="labs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="labs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="wack-a-mole" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -608,10 +551,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="158" y="23" width="1419" height="796" extended-state="0" />
+    <frame x="94" y="28" width="1419" height="796" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24400872" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24763979" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -708,13 +651,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lab_weather_map.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="18" lean-forward="true" selection-start-line="9" selection-start-column="18" selection-end-line="9" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js_labs/vowels.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
@@ -792,7 +728,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="3" column="22" lean-forward="false" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -858,7 +793,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -919,31 +853,39 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lab_weather_ajax/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="1" lean-forward="false" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lab_weather_ajax/300400.jpg">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lab_weather_ajax/ajax_lab.js">
+    <entry file="file://$PROJECT_DIR$/lab_weather_ajax/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="545">
-          <caret line="86" column="13" lean-forward="false" selection-start-line="86" selection-start-column="13" selection-end-line="86" selection-end-column="13" />
+        <state relative-caret-position="165">
+          <caret line="11" column="17" lean-forward="false" selection-start-line="11" selection-start-column="17" selection-end-line="11" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lab_weather_ajax/index.html">
+    <entry file="file://$PROJECT_DIR$/lab_weather_map.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="22" lean-forward="true" selection-start-line="22" selection-start-column="22" selection-end-line="22" selection-end-column="22" />
+        <state relative-caret-position="240">
+          <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lab_weather_ajax/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="1" lean-forward="true" selection-start-line="11" selection-start-column="1" selection-end-line="11" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lab_weather_ajax/ajax_lab.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="431">
+          <caret line="91" column="31" lean-forward="false" selection-start-line="91" selection-start-column="31" selection-end-line="91" selection-end-column="31" />
           <folding />
         </state>
       </provider>
