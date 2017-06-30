@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.2.0/css/ol.css" type="text/css">
+
+    <style>
+      .map {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://openlayers.org/en/v4.2.0/build/ol.js" type="text/javascript"></script>
+    <title>OpenLayers example</title>
+  </head>
+
+  <body>
+    <div id="map" class="map"></div>
+    <script type="text/javascript">
+
+      var map = new ol.Map({
+        target: 'map',
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+          center: [0, 0],
+          zoom: 2
+        })
+      });
+
+      var col = new ol.Collection();
+
+      function eqData() {
+        $.ajax({
+            url: "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson",
+            type: "get",
+            success: function (data) {
+                for (i in data.features) {
+                    if (data.features[i].properties.mag > 0) {
+                        var lon = data.features[i].geometry.coordinates[0];
+                        var lat = data.features[i].geometry.coordinates[1];
+                        var features = new ol.Feature(new ol.geom.Point(ol.proj.fromLonLat([lon, lat]), 'XY'));
+                        col.push(features);
+                    }
+                }
+                console.log(data);
+        }
+    });
+
+};
+        eqData();
+
+        var vecSource = new ol.source.Vector({
+            features: col
+        });
+        var vecLayer = new ol.layer.Vector({
+            source: vecSource
+        });
+
+        map.addLayer(vecLayer);
+
+    </script>
+
+  </body>
+</html>
+
