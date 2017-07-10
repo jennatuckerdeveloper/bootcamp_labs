@@ -144,7 +144,7 @@ while True:
                 What do you want to do? 
                 1) Walk on.
                 2) Take some rest.
-                3) Explore the area.
+                3) Scavenge / forage nearby area.
                 4) Search through packs.  
                 5) Look at the map.
                 6) Quit 
