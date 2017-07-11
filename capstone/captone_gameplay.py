@@ -1,5 +1,6 @@
-from python_capstone import Character, Item, Food, Inventory, Place, Occurrence
 from random import randrange, choice, randint
+
+from python_capstone import Character, Item, Food, Inventory, Place, Occurrence
 
 """
 Game play:

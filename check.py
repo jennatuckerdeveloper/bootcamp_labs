@@ -1,4 +1,4 @@
-from python_capstone import Occurence, Inventory, Item, Character
+from python_capstone import Occurence, Inventory, Character
 
 inv = Inventory()
 inv.get_item(Character("You"))

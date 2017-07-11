@@ -58,7 +58,7 @@ Final Win Screen
   - Last landmark.
   - Last menu:  See wall of names. Enter on wall of names.
 
-Wall of Names Entry Screen
+Wall of Names Entry Scree
   - add user name, names of those lost, and a character-limited user message
   - show user entered wall of names
 
@@ -66,8 +66,22 @@ Wall of Names
   - displays user entered names and messages
 
 
-#### *Data Model:*
+#### Data Model:
 
+Game:
+  - game state 
+
+Team:
+  - names of characters 
+  - health 
+  - status 
+
+Game survivor:  
+  - Player name (entered by user here)
+  - Names of travelers who survived on user's team 
+  - Names of travelers who died (automatically generated)
+  - Message with brief character limit (entered by user here)
+  
 
 #### Technical Components:
 
@@ -99,8 +113,9 @@ Javascript web interface:
   - possibly helps animate graphics
 
 Django:
-  - Possibly sends info back and forth to Python scripts and JS scripts?
-  - Possibly allows the walls names and messages to be saved?
+  - Allow user to enter four player names 
+  - Save player names in database and post summary of those who survived and died to wall if they win the game
+  - Allow the user to enter their name and messages on the wall 
 
 HTML / CSS:
   - Modifies what the player sees from plain text into organized gameplay menus and screens with graphics.
@@ -195,4 +210,3 @@ Design and simple travel graphic.
     dry/hot.
   Option to adjust pace.
   Choices at forks in trail, two paths.
-
