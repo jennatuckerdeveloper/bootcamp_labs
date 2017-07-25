@@ -32,8 +32,9 @@
         <div>2</div>
         <div>3</div>
         <div>4</div>
-        <div>5</div>
-        <div>6</div>
+        {% for project in projects %}
+            <div><img url="{{ project }}"></div>
+        {% endfor %}
      </div>
 
     <div id="sumskills">
