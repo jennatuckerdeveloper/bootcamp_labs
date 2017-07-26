@@ -1,6 +1,6 @@
 function play() {
     for (i = 1; i <= 16; i++) {
-        var img = '<img src="hole.jpg"/>';
+        var img = '<img class="hole" src="hole.jpg"/>';
         img = $(img).attr("id", "mole" + i);
         $('#ground').append(img);
     }
@@ -13,29 +13,38 @@ var t = 1000;
 
 timer = setInterval(game, t);
 
-var board = [];
 var score = 0;
 $('#number').html(score);
+lst = [];
 
 function game () {
-    var mole = Math.floor(Math.random() * 16) + 1;
-    $('#mole' + mole).attr("src", "mole.jpg");
-    board.push($('#mole' + mole));
+    var holeZ = $('#ground').children('.hole');
+    var mole = Math.floor(Math.random() * holeZ.length);
+    var mle = $(holeZ[mole]);
+    mle.attr("src", "mole.jpg").attr("class", "mole");
+    // console.log(holeZ);
+    // console.log(holeZ.length)
+    if (holeZ.length === 0) {
+        clearInterval(timer);
+        alert("End of Game!  Your score is: " + score)
+    }
 
+     // Chris used this syntax to print readable objects from a list of objects:
+    // $.each(lst, function (i, o){
+    //     console.log($(o))
+    // })
 };
 
-// Chris used this to print readable objects from game:
-// $.each(board, function (i, o){
-//     console.log($(o))
-// })
 
 $('img').click(function () {
     if ($(this).attr("src") === "mole.jpg") {
-        $(this).attr("src", "hole.jpg");
+        $(this).attr("src", "hole.jpg").attr("class", "hole");
         score = score + 10;
         $('#number').html(score);
-        
+        var lst_loc = lst.indexOf(this);
+        lst.splice(lst_loc, 1);
     }
+    $('#ground').css("border", "none");
 ;
 
     clearInterval(timer);
@@ -50,20 +59,21 @@ $('#stop').click(function() {
 });
 
 $('#start').click(function() {
+    clearInterval(timer);
+    for (i = 1; i <= 16; i++) {
+        var mole = i;
+        $('#mole' + mole).attr("src", "hole.jpg").attr("class", "hole");
+    }
+    ;
+    $('#ground').css("border", "none");
+    score = 0;
+    $('#number').html(score);
     t = 1000;
     timer = setInterval(game, t);
-    for (i=1; i<=16; i++) {
-        var mole = i;
-        $('#mole' + mole).attr("src", "hole.jpg");
-    }
-    $('#ground').css("border", "none");
+    lst = [];
+
 });
-
-
 
 
 // Chris took the function out of the setInvertal and made
 // it a variable, so that portion could also be reused.
-
-// If all 16 divs are mole pics, end game, present message
-// Do not change a picture of a mole to a mole
