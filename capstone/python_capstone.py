@@ -6,14 +6,17 @@ The foundation for a parody of the Oregon Trail.
 
 from random import randrange
 
+
 class Character:
     """
     Creates characters with their own names and health score.
     """
+
     def __init__(self, name, description=100):
         self.name = name
         self.description = description
         self.type = "character"
+
     def __str__(self):
         if self.name == "You":
             if 0 < self.description <= 25:
@@ -33,21 +36,26 @@ class Character:
                 return "{} is in decent health.".format(self.name)
             elif 76 <= self.description <= 100:
                 return "{} is in good health.".format(self.name)
+
     def __repr__(self):
         return str(self.name)
 
-            #The character is not yet removed from the player inventory.
+        # The character is not yet removed from the player inventory.
+
 
 class Item:
     def __init__(self, name, description, type="item"):
         self.name = name
         self.description = description
         self.type = type
+
     def __str__(self):
         return "{}: {}".format(self.name, self.description)
+
     def __repr__(self):
         return str(self.name)
-        #return self.__str__()
+        # return self.__str__()
+
 
 class Food(Item):
     def __init__(self):
@@ -80,6 +88,7 @@ class Inventory:
         for each in self.inventory:
             print(each)
 
+
 class Place:
     def __init__(self, name, inventory=Inventory()):
         places = {"camp": "a camp", "hotel": "a hotel", "pack": "a pack"}
@@ -90,14 +99,13 @@ class Place:
         self.finds = finds[name]
         self.inventory.get_item(self.finds)
 
-
     def __str__(self):
         return "You come across a {} and find: \n{}".format(self.description, self.finds.description)
+
 
 class Occurrence:
     def __init__(self, supplies):
         self.supplies = supplies
-
 
     def theft(self):
         loss = []
@@ -112,7 +120,6 @@ class Occurrence:
         print("A thief comes in the night and steals the following: ")
         for i in loss:
             print("{}".format(i))
-
 
     def depression(self):
         for x in self.supplies.inventory:
@@ -131,3 +138,40 @@ class Occurrence:
             if x.type == "character":
                 x.desciption -= 10
 
+
+class Landmark:
+    def __init__(self, name, inventory=Inventory()):
+        self.name = name
+        self.inventory = inventory
+
+        landmarks = {"Oregon border":
+                         {"gain": Food(),
+                          "loss": Food(),
+                          "story_loss": "You lose one day's food.",
+                          "story_gain": "After finding the Bible in your packs, the group allows you to rest on their land and offers you a gift of food to help you on your way."
+                          },
+                     "Eugene":
+                         {"gain": Item("cd", "a cd"),
+                          "loss": Food(),
+                          "story_loss": "You lose one day's food.",
+                          "story_gain": "You receive a CD.",
+                          },
+                     "Salem":
+                         {"gain": Item("book", "a book"),
+                          "loss": Food(),
+                          "story_loss": "You lose a day's food.",
+                          "story_gain": "You receive a book.",
+                          },
+                     }
+
+        self.gain = landmarks[name]["gain"]
+        self.loss = landmarks[name]["loss"]
+        self.story_loss = landmarks[name]["story_loss"]
+        self.story_gain = landmarks[name]["story_gain"]
+        self.inventory.get_item(self.finds)
+
+    def gain(self):
+        pass
+
+    def loss(self):
+        pass

@@ -1,6 +1,6 @@
 from random import randrange, choice, randint
 
-from python_capstone import Character, Item, Food, Inventory, Place, Occurrence
+from python_capstone import Character, Item, Food, Inventory, Place, Occurrence, Landmark
 
 """
 Game play:
@@ -207,7 +207,16 @@ while True:
         Milestones reached with unique gameplay sections:  
         """
         if mile_counter >= 123:
-            print("You have reached Eugene. ")
+            mile_counter = 123,
+            eugene = Landmark("Eugene")
+            print(eugene.story)
+            for x in player_inventory:
+                if x.name == "Bible":
+                    eugene.gain()
+                    break
+            else:
+                eugene.loss()
+
 
     elif play == "2":
         days = input("How many days do you want to rest? ")
@@ -246,13 +255,24 @@ while True:
 
 # noinspection PyUnreachableCode
 
-""" 
-Build any larger places / inventories.
+"""
+End game: End game when player named "you" dies. 
 
-Remove a day's food for every rest day. Or every 2 days.  
+Landmarks: Set specific mile counts to trigger landmarks. 
+Decide if landmarks/milestones will be a class. 
+Create 3 unique landmark stories / game play menus. 
+Allow interactions with inventories. Use unpack item function. 
+Player choices should determine outcomes. 
 
-Build out appearance.
-Build out 
+Lankmark arrival:
+    Tells story
+    checks inventory
+    chooses a gain or a loss based on inventory 
+    loss or gain:  inventory, miles, time(loss)
+    tells outcome of choice 
+    
+    add a unique Y/N based on inventory 
+    each landmark will have 4 potential outcomes 
+    
 
 """
-
