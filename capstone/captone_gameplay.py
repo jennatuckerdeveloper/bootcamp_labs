@@ -8,6 +8,8 @@ Game play:
 
 print("Welcome to PDX Trail!")
 
+#Add a try / except.  You can choose an incorrect key and not get an inventory.
+
 difficulty = input(   """
                             You will lead a team of five to Portland.
                             Do you want to be:
@@ -80,7 +82,7 @@ while True:
         if i.type != "character":
             print(i)
     try:
-        item = input("What do you want to pack? \nEnter 2 to unpack an item. \nEnter item or 'exit' to depart: ")
+        item = input("What do you want to pack? \nEnter 2 to unpack an item. \nEnter item or 'ready' to depart: ")
         player_inventory.pack_item(initial_inventory, item)
     except ValueError:
         continue
@@ -90,7 +92,7 @@ while True:
             initial_inventory.pack_item(player_inventory, item)
         except ValueError:
             continue
-    if item == "exit":
+    if item == "ready":
         ready = input("Are you ready to depart? y/n? ")
         if ready == "n":
             continue
@@ -137,7 +139,7 @@ generate random discoveries of inventories
 
 mile_counter = 0
 day_counter = 0
-
+last_milestone = "start"
 
 while True:
     try:
@@ -155,7 +157,10 @@ while True:
         continue
 
     if play == "1":
-        mile_counter += randrange(12, 22)
+        try:
+            mile_counter += randint(12, 22)
+        except:
+            import pdb; pdb.set_trace()
         day_counter += 1
         print("{} days on the trail.  {} miles covered.".format(day_counter, mile_counter))
         for i in player_inventory.inventory:
@@ -206,17 +211,14 @@ while True:
         """
         Milestones reached with unique gameplay sections:  
         """
-        if mile_counter >= 123:
-            mile_counter = 123,
-            eugene = Landmark("Eugene")
-            print(eugene.story)
-            for x in player_inventory:
-                if x.name == "Bible":
-                    eugene.gain()
-                    break
-            else:
-                eugene.loss()
 
+        milestones = [[50, "Salem"], [37, "Eugene"], [23, "Oregon Border"], [0, "start"]]
+
+        for x in range(len(milestones) - 1):
+            print(milestones[x], milestones[x + 1])
+            if mile_counter >= milestones[x][0] and last_milestone == milestones[x + 1][1]:
+                ms = Landmark(milestones[x][1], player_inventory)
+                ms.arrive()
 
     elif play == "2":
         days = input("How many days do you want to rest? ")
@@ -265,12 +267,7 @@ Allow interactions with inventories. Use unpack item function.
 Player choices should determine outcomes. 
 
 Lankmark arrival:
-    Tells story
-    checks inventory
-    chooses a gain or a loss based on inventory 
     loss or gain:  inventory, miles, time(loss)
-    tells outcome of choice 
-    
     add a unique Y/N based on inventory 
     each landmark will have 4 potential outcomes 
     

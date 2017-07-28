@@ -136,42 +136,66 @@ class Occurrence:
         print("A cold rain comes.")
         for x in self.supplies.inventory:
             if x.type == "character":
-                x.desciption -= 10
+                x.description -= 10
 
 
 class Landmark:
-    def __init__(self, name, inventory=Inventory()):
+    def __init__(self, name, supplies):
         self.name = name
-        self.inventory = inventory
+        self.supplies = supplies
 
-        landmarks = {"Oregon border":
-                         {"gain": Food(),
+        landmarks = {"Oregon Border":
+                         {"story": "You make camp on ",
+                          "pack": "food",
+                          "gain": Food(),
                           "loss": Food(),
                           "story_loss": "You lose one day's food.",
                           "story_gain": "After finding the Bible in your packs, the group allows you to rest on their land and offers you a gift of food to help you on your way."
                           },
                      "Eugene":
-                         {"gain": Item("cd", "a cd"),
+                         {"story": "You have reached Eugene.",
+                          "pack": "",
+                          "gain": Item("cd", "a cd"),
                           "loss": Food(),
                           "story_loss": "You lose one day's food.",
                           "story_gain": "You receive a CD.",
                           },
                      "Salem":
-                         {"gain": Item("book", "a book"),
+                         {"story": "You have reached Salem.",
+                          "pack": "",
+                          "gain": Item("book", "a book"),
                           "loss": Food(),
                           "story_loss": "You lose a day's food.",
                           "story_gain": "You receive a book.",
                           },
                      }
-
+        self.story = landmarks[name]["story"]
         self.gain = landmarks[name]["gain"]
         self.loss = landmarks[name]["loss"]
         self.story_loss = landmarks[name]["story_loss"]
         self.story_gain = landmarks[name]["story_gain"]
-        self.inventory.get_item(self.finds)
+        self.pack = landmarks[name]['pack']
 
-    def gain(self):
-        pass
+    def outcome(self):
+        """ The outcome function checks a character's inventory for the key associated with a Landmark
+        Whehther the key is present in the inventory then calls a loss or a gain to the inventory.
+        Do I need three functions to affect inventories, characters, etc like with luck?
+        """
+        have = []
+        for x in self.supplies.inventory:
+            if x.type == self.pack:
+                have.append(x)
 
-    def loss(self):
-        pass
+        if len(have) > 0:
+            self.supplies.get_item(self.gain)
+            print(self.story_gain)
+        else:
+            self.supplies.inventory.remove(self.loss)
+            #Add a try / except that takes days / health / character from team returns different story
+            print(self.story_loss)
+
+    def arrive(self):
+        print(self.story)
+        self.supplies.list_inventory()
+        self.outcome()
+        self.supplies.list_inventory()
