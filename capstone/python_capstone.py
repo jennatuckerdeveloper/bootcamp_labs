@@ -1,21 +1,37 @@
 """
 
-The foundation for a parody of the Oregon Trail.
+7 classes form the foundation for PDX Trail:
+    Character
+    Item
+    Food(Item)
+    Inventory
+    Place
+    Occurrence
+    Landmark
 
 """
 
 from random import randrange
 
+"""
+Creates characters each with their own names and health scores (descriptions).
+"""
 
 class Character:
+
+
     """
-    Creates characters with their own names and health score.
+    Characters begin with a health score (description) of 100.
     """
 
     def __init__(self, name, description=100):
         self.name = name
         self.description = description
         self.type = "character"
+
+    """
+    The __str__ function prints a readable description of characters' health status.
+    """
 
     def __str__(self):
         if self.name == "You":
@@ -37,11 +53,19 @@ class Character:
             elif 76 <= self.description <= 100:
                 return "{} is in good health.".format(self.name)
 
+    """
+    The __repr__ function shows characters printed in a list as their names.
+    """
+
     def __repr__(self):
         return str(self.name)
 
         # The character is not yet removed from the player inventory.
 
+
+"""
+The Item class creates Items with unique names and descriptions and a default type.
+"""
 
 class Item:
     def __init__(self, name, description, type="item"):
@@ -49,25 +73,38 @@ class Item:
         self.description = description
         self.type = type
 
+    """
+    Prints a readable version of the Item's name: description.  
+    """
     def __str__(self):
         return "{}: {}".format(self.name, self.description)
 
+    """
+    Prints the item's name when the Item is printed in a list.  
+    """
     def __repr__(self):
         return str(self.name)
         # return self.__str__()
 
-
+"""
+Food Items have a default name, description, and type.  
+"""
 class Food(Item):
     def __init__(self):
-        # self.nutrition = 20
         super().__init__(name="Food", description="A day's food for your group.", type="food")
 
+"""
+An Inventory has an inventory list and a limit to the number of Items it can hold.
+"""
 
 class Inventory:
     def __init__(self, limit=None):
         self.inventory = []
         self.limit = limit
 
+    """
+    The get_item function takes an Item or returns a message if the Inventory is full.
+    """
     def get_item(self, item):
         if self.limit is not None:
             if len(self.inventory) <= self.limit:
@@ -77,6 +114,9 @@ class Inventory:
         else:
             self.inventory.append(item)
 
+    """
+    The pack_item function moves an Item from one Inventory to another.  
+    """
     def pack_item(self, source, item):
         for x in source.inventory:
             if x.name == item:
@@ -84,11 +124,16 @@ class Inventory:
                 source.inventory.remove(x)
                 break
 
+    """
+    The list_inventory function prints each Item in the Inventory.  
+    """
     def list_inventory(self):
         for each in self.inventory:
             print(each)
 
+"""
 
+"""
 class Place:
     def __init__(self, name, inventory=Inventory()):
         places = {"camp": "a camp", "hotel": "a hotel", "pack": "a pack"}
@@ -189,13 +234,14 @@ class Landmark:
         if len(have) > 0:
             self.supplies.get_item(self.gain)
             print(self.story_gain)
+
         else:
-            self.supplies.inventory.remove(self.loss)
-            #Add a try / except that takes days / health / character from team returns different story
-            print(self.story_loss)
+            try:
+                self.supplies.inventory.remove(self.loss)
+                print(self.story_loss)
+            except ValueError:
+                pass
 
     def arrive(self):
         print(self.story)
-        self.supplies.list_inventory()
         self.outcome()
-        self.supplies.list_inventory()

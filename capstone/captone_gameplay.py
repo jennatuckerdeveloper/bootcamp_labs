@@ -99,44 +99,6 @@ while True:
         if ready == "y":
             break
 
-
-"""
-How do I set a limit on a list to limit an inventory?  
-It's probably just an if/else using len(list).
-But then how do I make it unique for each version?  
-"""
-
-"""
-Main game menu. 
-
-So what happens in a segment of the game?
-At stops, there are decisions and also larger inventories.
-You get to restock on food.  
-
-Game Play:
-1) Walk on.
-2) Take some rest.
-3) Explore the area.
-4) Search through packs.  
-5) Look at the map.
-
-
-number of miles covered, distance counter 
-    start set, make random, make choice 
-
-a day counter (turn counter) 
-
-your food stores go down
-    start set, make choice 
-
-generate discoveries and other choices / paths 
-
-generate random discoveries of inventories 
-    this replaces hunting:  you forage and scavenge 
-    make some foods poison 
-    make different for different game plays 
-"""
-
 mile_counter = 0
 day_counter = 0
 last_milestone = "start"
@@ -178,7 +140,7 @@ while True:
             for i in player_inventory.inventory:
                 if i.type == "character":
                     i.description -= 20
-                    print(i.description)
+                    print(i)
 
         if any(x.type == "character" for x in player_inventory.inventory):
             temp = []
@@ -187,13 +149,17 @@ while True:
                     temp.append(i)
             for i in temp:
                 if i.description <= 0:
-                    player_inventory.inventory.remove(i)
-                    print("{} has died of hunger and exhaustion.".format(i.name))
-                    player_inventory.limit -= 1
+                    if i.name != "You":
+                        print("{} has died of hunger and exhaustion.".format(i.name))
+                        player_inventory.inventory.remove(i)
+                        player_inventory.limit -= 1
+                    if i.name == "You":
+                        print("You have died of hunger and exhaustion.")
+                        quit()
 
-        if not any(x.type == "character" for x in player_inventory.inventory):
-                print("Your team has died.")
-                quit()
+        # if not any(x.type == "character" for x in player_inventory.inventory):
+        #         print("Your team has died.")
+        #         quit()
 
         luck = randint(1, 20)
 
@@ -208,17 +174,15 @@ while True:
         if luck == 3:
             happening = Occurrence(player_inventory)
             happening.rain()
-        """
-        Milestones reached with unique gameplay sections:  
-        """
 
         milestones = [[50, "Salem"], [37, "Eugene"], [23, "Oregon Border"], [0, "start"]]
 
         for x in range(len(milestones) - 1):
-            print(milestones[x], milestones[x + 1])
             if mile_counter >= milestones[x][0] and last_milestone == milestones[x + 1][1]:
                 ms = Landmark(milestones[x][1], player_inventory)
                 ms.arrive()
+                last_milestone = milestones[x][1]
+            # Will likely error at the end of the game without another line of code.
 
     elif play == "2":
         days = input("How many days do you want to rest? ")
@@ -258,18 +222,7 @@ while True:
 # noinspection PyUnreachableCode
 
 """
-End game: End game when player named "you" dies. 
 
-Landmarks: Set specific mile counts to trigger landmarks. 
-Decide if landmarks/milestones will be a class. 
-Create 3 unique landmark stories / game play menus. 
-Allow interactions with inventories. Use unpack item function. 
-Player choices should determine outcomes. 
 
-Lankmark arrival:
-    loss or gain:  inventory, miles, time(loss)
-    add a unique Y/N based on inventory 
-    each landmark will have 4 potential outcomes 
-    
 
 """
