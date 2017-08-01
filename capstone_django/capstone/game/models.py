@@ -51,6 +51,7 @@ class Item(models.Model):
     description = models.CharField(max_length=300)
     type = models.CharField(max_length=100, default="item")
     inventory = models.ForeignKey("Inventory", related_name="items")
+    landmark = models.ForeignKey("Landmark", related_name="landmark", blank=True, null=True)
 
 
     """
@@ -111,6 +112,7 @@ class Inventory(models.Model):
 
 
     def depression(self):
+    #This function might need to be made more random.
         for x in self.characters.all():
             if x.name == "You":
                 print("{} are depressed".format(x.name))
@@ -123,69 +125,17 @@ class Inventory(models.Model):
     def rain(self):
         print("A cold rain comes.")
         for x in self.characters.all():
-            if x.type == "character":
-                x.description -= 10
+            x.description -= 10
 
 #Place are Inventories.  If the user chooses to take Items from the inventory, the Item's inventory = changes.
 
-class Landmark:
-    def __init__(self, name, supplies):
-        self.name = name
-        self.supplies = supplies
 
-        landmarks = {"Oregon Border":
-                         {"story": "You make camp on ",
-                          "pack": "food",
-                          "gain": Food(),
-                          "loss": Food(),
-                          "story_loss": "You lose one day's food.",
-                          "story_gain": "After finding the Bible in your packs, the group allows you to rest on their land and offers you a gift of food to help you on your way."
-                          },
-                     "Eugene":
-                         {"story": "You have reached Eugene.",
-                          "pack": "",
-                          "gain": Item("cd", "a cd"),
-                          "loss": Food(),
-                          "story_loss": "You lose one day's food.",
-                          "story_gain": "You receive a CD.",
-                          },
-                     "Salem":
-                         {"story": "You have reached Salem.",
-                          "pack": "",
-                          "gain": Item("book", "a book"),
-                          "loss": Food(),
-                          "story_loss": "You lose a day's food.",
-                          "story_gain": "You receive a book.",
-                          },
-                     }
-        self.story = landmarks[name]["story"]
-        self.gain = landmarks[name]["gain"]
-        self.loss = landmarks[name]["loss"]
-        self.story_loss = landmarks[name]["story_loss"]
-        self.story_gain = landmarks[name]["story_gain"]
-        self.pack = landmarks[name]['pack']
+class Landmark(models.Model):
+    name = models.CharField(max_length=100)
 
-    def outcome(self):
-        """ The outcome function checks a character's inventory for the key associated with a Landmark
-        Whehther the key is present in the inventory then calls a loss or a gain to the inventory.
-        Do I need three functions to affect inventories, characters, etc like with luck?
-        """
-        have = []
-        for x in self.supplies.inventory:
-            if x.type == self.pack:
-                have.append(x)
+    """
+    Landmarks will be systematically generated.  
+    The will have a name based on the place.
+    Items will be systematically generated and connected to Landmarks by FK.
+    """
 
-        if len(have) > 0:
-            self.supplies.get_item(self.gain)
-            print(self.story_gain)
-
-        else:
-            try:
-                self.supplies.inventory.remove(self.loss)
-                print(self.story_loss)
-            except ValueError:
-                pass
-
-    def arrive(self):
-        print(self.story)
-        self.outcome()
