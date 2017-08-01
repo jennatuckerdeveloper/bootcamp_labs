@@ -6,7 +6,7 @@ class Character(models.Model):
 
     name = models.CharField(max_length=100)
     description = models.IntegerField(default=100)
-    type = models.CharField(max_length=100, default="character")
+    inventory = models.ForeignKey("Inventory", related_name="characters")
 
     """
     The __str__ function prints a readable description of characters' health status.
@@ -111,22 +111,20 @@ class Inventory(models.Model):
 
 
     def depression(self):
-        for x in self.items.all():
-            if x.type == "character":
-                if x.name == "You":
-                    print("{} are depressed".format(x.name))
-                    x.description -= 15
-                else:
-                    print("{} is depressed.".format(x.name))
-                    x.description -= 15
-                break
+        for x in self.characters.all():
+            if x.name == "You":
+                print("{} are depressed".format(x.name))
+                x.description -= 15
+            else:
+                print("{} is depressed.".format(x.name))
+                x.description -= 15
+            break
 
     def rain(self):
         print("A cold rain comes.")
-        for x in self.supplies.inventory:
+        for x in self.characters.all():
             if x.type == "character":
                 x.description -= 10
-
 
 #Place are Inventories.  If the user chooses to take Items from the inventory, the Item's inventory = changes.
 
