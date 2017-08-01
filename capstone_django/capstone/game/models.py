@@ -1,4 +1,5 @@
 from django.db import models
+from random import randrange
 
 
 class Character(models.Model):
@@ -49,6 +50,8 @@ class Item(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     type = models.CharField(max_length=100, default="item")
+    inventory = models.ForeignKey("Inventory", related_name="items")
+
 
     """
     Prints a readable version of the Item's name: description.  
@@ -81,77 +84,34 @@ An Inventory has an inventory list and a limit to the number of Items it can hol
 #This one needs a lot of work
 
 class Inventory(models.Model):
-    
-    function that connects the items via foreign key to inventory
-    inventory = []
-    limit = models.IntegerField()
-
-    """
-    The get_item function takes an Item or returns a message if the Inventory is full.
-    """
-    def get_item(self, item):
-        if self.limit is not None:
-            if len(self.inventory) <= self.limit:
-                self.inventory.append(item)
-            elif len(self.inventory) > self.limit:
-                print("You don't have enough room. ")
-        else:
-            self.inventory.append(item)
-
-    """
-    The pack_item function moves an Item from one Inventory to another.  
-    """
-    def pack_item(self, source, item):
-        for x in source.inventory:
-            if x.name == item:
-                self.get_item(x)
-                source.inventory.remove(x)
-                break
+    name = models.CharField(max_length=100)
 
     """
     The list_inventory function prints each Item in the Inventory.  
+    Kept for testing.  Should be unncessary after Django refactoring.
     """
+
     def list_inventory(self):
-        for each in self.inventory:
+        for each in self.items.all():
             print(each)
 
-"""
-
-"""
-class Place:
-    def __init__(self, name, inventory=Inventory()):
-        places = {"camp": "a camp", "hotel": "a hotel", "pack": "a pack"}
-        finds = {"camp": Food(), "hotel": Item("bible", "a Gideon Bible"), "pack": Item("cd", "a cd")}
-        self.inventory = inventory
-        self.name = name
-        self.description = places[name]
-        self.finds = finds[name]
-        self.inventory.get_item(self.finds)
-
-    def __str__(self):
-        return "You come across a {} and find: \n{}".format(self.description, self.finds.description)
-
-
-class Occurrence:
-    def __init__(self, supplies):
-        self.supplies = supplies
-
     def theft(self):
-        loss = []
         luck = randrange(1, 3)
+        loss = []
         while luck > 0:
-            for x in self.supplies.inventory:
+            for x in self.items.all():
                 if x.type != "character":
                     if luck > 0:
                         loss.append(x)
-                        self.supplies.inventory.remove(x)
-                    luck -= 1
-        print("A thief comes in the night and steals the following: ")
-        for i in loss:
-            print("{}".format(i))
+                        x.inventory = None
+                        luck -= 1
+        print("A thief comes in the night and steals: ")
+        for x in loss:
+            print(x.name)
+
 
     def depression(self):
-        for x in self.supplies.inventory:
+        for x in self.items.all():
             if x.type == "character":
                 if x.name == "You":
                     print("{} are depressed".format(x.name))
@@ -167,6 +127,8 @@ class Occurrence:
             if x.type == "character":
                 x.description -= 10
 
+
+#Place are Inventories.  If the user chooses to take Items from the inventory, the Item's inventory = changes.
 
 class Landmark:
     def __init__(self, name, supplies):
