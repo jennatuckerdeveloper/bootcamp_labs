@@ -53,7 +53,6 @@ class Item(models.Model):
     inventory = models.ForeignKey("Inventory", related_name="items")
     landmark = models.ForeignKey("Landmark", related_name="landmark", blank=True, null=True)
 
-
     """
     Prints a readable version of the Item's name: description.  
     """
@@ -127,8 +126,8 @@ class Inventory(models.Model):
         for x in self.characters.all():
             x.description -= 10
 
-#Place are Inventories.  If the user chooses to take Items from the inventory, the Item's inventory = changes.
-
+#Place are Inventories of Items with unique names.
+# If the user chooses to take Items from the inventory, the Item's inventory = changes.
 
 class Landmark(models.Model):
     name = models.CharField(max_length=100)
