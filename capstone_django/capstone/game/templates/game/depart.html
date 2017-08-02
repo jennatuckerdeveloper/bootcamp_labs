@@ -1,11 +1,19 @@
-#use if/else statements to check the number of items in the inventory on the pack screen and in places
-
 <!DOCTYPE html>
 <html>
 <head>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'game/css/styles.css' %}">
-<h1>Working</h1>
+    <p>You have have selected the following to pack:</p>
+    <p>Your packs can hold 3 items.</p>
+    <ul>
+    {% for x in player_inventory%}
+        <li>{{x.name}}</li>
+    {% endfor %}
+    </ul>
+    <p>Enter "pack" to return and pack more items</p>
+    <p>Or enter items to unpack</p>
+    <input type="text" id="pack"> <br>
+
 </head>
 <body>
 

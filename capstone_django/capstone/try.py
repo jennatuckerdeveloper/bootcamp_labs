@@ -20,3 +20,7 @@ print(one.landmark)
 # pi.theft()
 # pi.depression()
 # pi.rain()
+
+
+#Fix the reg ex in games.urls to go to each page
+#Create links so that form entries get saved and send to next screen.

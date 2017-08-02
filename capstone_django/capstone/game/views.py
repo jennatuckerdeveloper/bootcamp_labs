@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Item, Inventory, Character, Landmark
 
 # places = {"camp": "a camp", "hotel": "a hotel", "pack": "a pack"}
 # #this dictionary will become code to systematically create places
@@ -54,8 +55,48 @@ from django.http import HttpResponse
 #     print(self.story)
 #     self.outcome()
 
-
-def game(request):
-    return render(request, 'game/game.html', {})
+#use if/else statements to check the number of items in the inventory on the pack screen and in places
 
 
+def gameplay(request):
+    return render(request, 'game/gameplay.html', {})
+
+    #The form on this page needs to create a limit for the number of items allowed in player_inventory at the end of hte packs screen.
+    #The form also needs to allow the user to go on to the names screen.
+
+def names(request):
+    return render(request, 'game/gameplay.html', {})
+
+    #The form on this page needs to instantiate Character models with the entered names.
+    #The form also needs to allow the user to go on to the packing screen.
+
+def packing(request):
+    # Turn most of this into a helper function that systematically creates an initial inventory
+    initial_inv = Inventory.objects.create()
+    food = Item.objects.create(name="Food", description="A day's food for your team.", inventory=initial_inv)
+    food = Item.objects.create(name="Food", description="A day's food for your team.", inventory=initial_inv)
+    cd = Item.objects.create(name="cd", description="a cd", inventory=initial_inv)
+    initial_inventory = initial_inv.items.all()
+    return render(request, 'game/packing.html', {"initial_inventory": initial_inventory})
+
+    #The form on this page needs to change the entered item's inventory to player_inventory.
+    #The form on this page also needs to allow the user to go to the depart screen.
+
+def depart(request):
+    player_inv = Inventory.objects.create()
+    food = Item.objects.create(name="Food", description="A day's food for your team.", inventory=player_inv)
+    food = Item.objects.create(name="Food", description="A day's food for your team.", inventory=player_inv)
+    cd = Item.objects.create(name="cd", description="a cd", inventory=player_inv)
+    player_inventory = player_inv.items.all()
+    return render(request, 'game/depart.html', {"player_inventory": player_inventory})
+
+    #The form on this page needs to allow the user to:
+        #  remove items from the pack and return them to initial_inv
+        #  go back to the pack screen
+        #  go on to the play screen
+
+def play(request):
+    return render(request, 'game/play.html', {})
+
+def win(request):
+    return render(request, 'game/win.html', {})

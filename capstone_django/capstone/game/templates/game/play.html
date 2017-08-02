@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'game/css/styles.css' %}">
+    <p>       What do you want to do? </p>
+    <p>
+                1) Walk on. <br>
+                2) Take some rest. <br>
+                3) Scavenge / forage nearby area. <br>
+                4) Search through packs. <br>
+                5) Look at the map.  <br>
+                6) Quit <br>
+      </p>
+    <input type="text" id="pack"> <br>
+
+</head>
+<body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% load static %}
+<script src="{% static 'game/js/scripts.js' %}"></script>
+</body>
+
+</html>

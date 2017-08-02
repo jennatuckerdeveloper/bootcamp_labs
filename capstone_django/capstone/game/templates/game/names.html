@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'game/css/styles.css' %}">
+    <p>You will lead your team.</p>
+
+    <p>Choose a second character name: </p>
+    <input type="text" id="name2"> <br>
+    <p>Choose a third character name: </p>
+    <input type="text" id="name3"> <br>
+    <p>Choose a fourth character name: </p>
+    <input type="text" id="name4"> <br>
+    <p>Choose a fifth character name: </p>
+    <input type="text" id="name5">
+
+</head>
+<body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{% load static %}
+<script src="{% static 'game/js/scripts.js' %}"></script>
+</body>
+
+</html>
