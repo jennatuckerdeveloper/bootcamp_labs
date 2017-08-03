@@ -50,7 +50,7 @@ class Item(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
     type = models.CharField(max_length=100, default="item")
-    inventory = models.ForeignKey("Inventory", related_name="items")
+    inventory = models.ForeignKey("Inventory", related_name="items", blank=True, null=True)
     landmark = models.ForeignKey("Landmark", related_name="landmark", blank=True, null=True)
 
     """
@@ -75,7 +75,18 @@ class Food(models.Model):
     name = models.CharField(max_length=100, default="Food")
     description = models.CharField(max_length=300, default="A day's food for your group.")
     type = models.CharField(max_length=100, default="food")
+    """
+    Prints a readable version of the Item's name: description.  
+    """
+    def __str__(self):
+        return "{}: {}".format(self.name, self.description)
 
+    """
+    Prints the item's name when the Item is printed in a list.  
+    """
+    def __repr__(self):
+        return self.name
+        # return self.__str__()
 
 """
 An Inventory has an inventory list and a limit to the number of Items it can hold.
@@ -85,6 +96,13 @@ An Inventory has an inventory list and a limit to the number of Items it can hol
 
 class Inventory(models.Model):
     name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return "{}: {}".format(self.name, self.items.all())
+
+    def __repr__(self):
+        return self.name
+        # return self.__str__()
 
     """
     The list_inventory function prints each Item in the Inventory.  

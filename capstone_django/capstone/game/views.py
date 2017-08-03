@@ -14,8 +14,46 @@ place_inventory = {
     "hotel": "a hotel",
     "pack": "a pack"}
 
-initial_inv = Inventory.objects.create()
+landmarks = {"Oregon Border":
+                 {"story": "You make camp on ",
+                  "key": "Bible",
+                  "gain": "cd",
+                  "loss": "food",
+                  "story_loss": "You lose one day's food.",
+                  "story_gain": "After finding the Bible in your packs, the group allows you to rest on their land and offers you a gift of food to help you on your way."
+                  },
+             "Eugene":
+                 {"story": "You have reached Eugene.",
+                  "key": "Bible",
+                  "gain": "cd",
+                  "loss": "food",
+                  "story_loss": "You lose one day's food.",
+                  "story_gain": "You receive a CD.",
+                  },
+             "Salem":
+                 {"story": "You have reached Salem.",
+                  "key": "Bible",
+                  "gain": "cd",
+                  "loss": "food",
+                  "story_loss": "You lose a day's food.",
+                  "story_gain": "You receive a book.",
+                  },
+             }
 
+initial_inv = Inventory.objects.create(name="initial_inv")
+player_inv = Inventory.objects.create(name="player_inv")
+
+
+"""This help function instantiates characters and connects them to the player inventory."""
+
+def create_characters(name1, name2, name3, name4):
+    character1 = Character.objects.create(name=name1, inventory=player_inv)
+    character2 = Character.objects.create(name=name2, inventory=player_inv)
+    character3 = Character.objects.create(name=name3, inventory=player_inv)
+    character4 = Character.objects.create(name=name4, inventory=player_inv)
+
+
+"""This helper function creates the initial inventory in packing view. """
 
 def create_initial_inventory():
     items = []
@@ -34,6 +72,8 @@ def create_initial_inventory():
 # These all have the same variable name.  But not the same name.  Does it matter?
 
 
+"""This helper function creates all the place inventories and found items in play view."""
+
 def create_place_inventories():
     places = place_inventory.keys()
     for place in places:
@@ -43,64 +83,30 @@ def create_place_inventories():
                                        inventory=inventoryx)
 
 
-# finds = {"camp": Food(), "hotel": Item("bible", "a Gideon Bible"), "pack": Item("cd", "a cd")}
-#this dictionary will become code to systematically create items connected to those places
-
-
-# landmarks = {"Oregon Border":
-#                  {"story": "You make camp on ",
-#                   "pack": "food",
-#                   "gain": Food(),
-#                   "loss": Food(),
-#                   "story_loss": "You lose one day's food.",
-#                   "story_gain": "After finding the Bible in your packs, the group allows you to rest on their land and offers you a gift of food to help you on your way."
-#                   },
-#              "Eugene":
-#                  {"story": "You have reached Eugene.",
-#                   "pack": "",
-#                   "gain": Item("cd", "a cd"),
-#                   "loss": Food(),
-#                   "story_loss": "You lose one day's food.",
-#                   "story_gain": "You receive a CD.",
-#                   },
-#              "Salem":
-#                  {"story": "You have reached Salem.",
-#                   "pack": "",
-#                   "gain": Item("book", "a book"),
-#                   "loss": Food(),
-#                   "story_loss": "You lose a day's food.",
-#                   "story_gain": "You receive a book.",
-#                   },
-#              }
-
-#Figure out how to systematically create Landmark experiences
-
-
-# def outcome(self):
-#     for x in self.inventory.items.all():
-#         if x.name == key:
-#             have = True
-#
-#     if have == True:
-#         self.items.inventory = player_inventory
-#         print(story_gain)
-#
-#     else:
-#         self.supplies.inventory.remove(self.loss)
-#         print(story_loss)
-#
-#
-# def arrive(self):
-#     print(self.story)
-#     self.outcome()
-
-#use if/else statements to check the number of items in the inventory on the pack screen and in places
+def landmark_outcomes(name):
+    milestone = landmarks[name]
+    ldmk = Landmark.objects.create(name=name)
+    find = Item.objects.create(name=milestone["gain"], landmark=ldmk)
+    player_inventory = player_inv.items.all()
+    has_key = None
+    for item in player_inventory:
+        if item.name == milestone["key"]:
+            has_key = True
+            break
+        else:
+            has_key = False
+    print(has_key)
+    if has_key == True:
+        print(milestone["gain"])
+    if has_key == False:
+        print(milestone["loss"])
 
 
 def gameplay(request):
     return render(request, 'game/gameplay.html', {})
 
-    #The form on this page needs to create a limit for the number of items allowed in player_inventory at the end of hte packs screen.
+    #The form on this page needs to create a limit for the number of items allowed in player_inventory at the end of the
+    #  packs screen.
     #The form also needs to allow the user to go on to the names screen.
 
 
@@ -108,6 +114,7 @@ def names(request):
     return render(request, 'game/gameplay.html', {})
 
     #The form on this page needs to instantiate Character models with the entered names.
+    #Will likely use helper function create_characters
     #The form also needs to allow the user to go on to the packing screen.
 
 
