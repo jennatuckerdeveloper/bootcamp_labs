@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from . import views
+from game import views
 
 app_label = "game"
 urlpatterns = [

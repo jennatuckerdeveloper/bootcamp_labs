@@ -66,27 +66,27 @@ class Item(models.Model):
         return self.name
         # return self.__str__()
 
-# """
-# Food Items have a default name, description, and type.
-# """
-#
-#
-# class Food(models.Model):
-#     name = models.CharField(max_length=100, default="Food")
-#     description = models.CharField(max_length=300, default="A day's food for your group.")
-#     type = models.CharField(max_length=100, default="food")
-#     """
-#     Prints a readable version of the Item's name: description.
-#     """
-#     def __str__(self):
-#         return "{}: {}".format(self.name, self.description)
-#
-#     """
-#     Prints the item's name when the Item is printed in a list.
-#     """
-#     def __repr__(self):
-#         return self.name
-#         # return self.__str__()
+"""
+Food Items have a default name, description, and type.
+"""
+
+
+class Food(models.Model):
+    name = models.CharField(max_length=100, default="Food")
+    description = models.CharField(max_length=300, default="A day's food for your group.")
+    type = models.CharField(max_length=100, default="food")
+    """
+    Prints a readable version of the Item's name: description.
+    """
+    def __str__(self):
+        return "{}: {}".format(self.name, self.description)
+
+    """
+    Prints the item's name when the Item is printed in a list.
+    """
+    def __repr__(self):
+        return self.name
+        # return self.__str__()
 
 """
 An Inventory has an inventory list and a limit to the number of Items it can hold.

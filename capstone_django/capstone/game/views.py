@@ -41,9 +41,9 @@ landmarks = {"Oregon Border":
                   },
              }
 
-initial_inv = Inventory.objects.create(name="initial_inv")
-player_inv = Inventory.objects.create(name="player_inv")
-place_inventory = Inventory.objects.create(name="place_inv")
+# initial_inv = Inventory.objects.create(name="initial_inv")
+# player_inv = Inventory.objects.create(name="player_inv")
+# place_inventory = Inventory.objects.create(name="place_inv")
 
 
 """This help function instantiates characters and connects them to the player inventory."""
