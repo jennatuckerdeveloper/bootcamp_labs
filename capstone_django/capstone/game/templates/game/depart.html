@@ -1,6 +1,13 @@
+{% extends 'base.html' %}
 <!DOCTYPE html>
 <html>
 <head>
+    {% block head %}
+    <title>Depart</title>
+    {% endblock %}
+</head>
+<body>
+    {% block body %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'game/css/styles.css' %}">
     <p>You have have selected the following to pack:</p>
@@ -10,16 +17,16 @@
         <li>{{x.name}}</li>
     {% endfor %}
     </ul>
-    <p>Enter "pack" to return and pack more items</p>
+    <p>Enter items to unpack:</p>
     <p>Or enter items to unpack</p>
-    <input type="text" id="pack"> <br>
-
-</head>
-<body>
-
+    <input type="text" id="unpack"> <br>
+    <p>Go back and pack more items.</p>
+        <button id="gotopack">Return To Pack</button>
+    <p>Read to depart?</p>
+    <button id="depart">Ready</button>
+    {% endblock %}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 {% load static %}
-<script src="{% static 'game/js/scripts.js' %}"></script>
 </body>
 
 </html>
