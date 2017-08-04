@@ -136,8 +136,7 @@ def names_entry(request):
                          'name5': name5,
                          })
 
-    #The form on this page needs to instantiate Character models with the entered names.
-    #The form also needs to allow the user to go on to the packing screen.
+    #This will probaly work with create_characters function to instantiate Characters linked to the player_inv.
 
 
 def packing(request):
@@ -147,7 +146,7 @@ def packing(request):
     return render(request, 'game/packing.html', {"initial_inventory": initial_inventory})
 
     #The form on this page needs to change the entered item's inventory to player_inventory.
-    #The form on this page also needs to allow the user to go to the depart screen.
+    #This page currently allows the user to laod the inivial_inv multiple times.
 
 
 def packing_entry(request):
@@ -162,9 +161,7 @@ def depart(request):
     return render(request, 'game/depart.html', {"player_inventory": player_inventory})
 
     #The form on this page needs to allow the user to:
-        #  remove items from the pack and return them to initial_inv
-        #  go back to the pack screen
-        #  go on to the play screen
+        #  remove items from the pack and return them to initial_inv.
 
 def depart_entry(request):
     if request.method == 'POST':
@@ -175,6 +172,16 @@ def depart_entry(request):
 def play(request):
     create_place_inventories()
     return render(request, 'game/play.html', {})
+
+"""This one is the heart of the game.  
+    User needs to be able to:  
+        Walk
+        Random events
+        Forage / Scavenge (places)
+        Landmarks
+    This needs to allow the user to die / lose the game.  
+    This needs to allow the user to win.
+"""
 
 
 def play_entry(request):
