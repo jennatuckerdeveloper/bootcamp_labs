@@ -14,12 +14,22 @@ beginning_inventory = {
 }
 
 place_list = {
-    "camp": "a camp",
-    "hotel": "a hotel",
-    "pack": "a pack"}
+    "camp":
+        {"description": "a camp",
+         "find": "food"
+         },
+    "hotel":
+        {"description": "a hotel",
+         "find": "Bible",
+         },
+    "pack":
+        {"description": "a pack",
+         "find": "cd"
+         }
+            }
 
 landmarks = {"Oregon Border":
-                 {"story": "You make camp on ",
+                 {"story": "You have reached the Oregon Border.  You make camp on... ",
                   "key": "Bible",
                   "gain": "cd",
                   "loss": "food",
@@ -73,27 +83,31 @@ def create_place_inventories(place_inventory):
                                        inventory=place_inventory)
 
 
-def landmark_outcomes(name):
+def landmark_outcomes(name, player_inventory):
+    print(player_inventory)
     milestone = landmarks[name]
     ldmk = Landmark.objects.create(name=name)
-    find = Item.objects.create(name=milestone["gain"], description=milestone["gain"], landmark=ldmk, inventory=place_inventory)
-    player_inventory = player_inv.items.all()
+    find = Item.objects.create(name=milestone["gain"], description=milestone["gain"], landmark=ldmk, inventory=None)
     has_key = None
-    for item in player_inventory:
+    for item in player_inventory.items.all():
         if item.name == milestone["key"]:
             has_key = True
+            print(True)
             break
         else:
             has_key = False
+            print(False)
     if has_key == True:
         find.landmark = None
-        find.inventory = player_inv
+        find.inventory = player_inventory
         find.save()
+        print(player_inventory)
     if has_key == False:
-        for item in player_inventory:
+        for item in player_inventory.items.all():
             if item.name == milestone["loss"]:
-                item.inventory = place_inventory
+                item.inventory = None
                 item.save()
+                print(player_inventory)
 
 
 def gameplay(request):
@@ -255,11 +269,61 @@ def play_entry(request):
                     i.save()
                     print(i.description)
 
+            for i in player_inventory.characters.all():
+                if i.description <= 0:
+                    if i.name != "You":
+                        print("{} has died of hunger and exhaustion.".format(i.name))
+                        i.inventory = None
+                    if i.name == "You":
+                        print("You have died of hunger and exhaustion.")
+                        #How do I add an exit to end the game here???
+
+            """ The luck portion of play function creates random losses to inventory or individual or group health."""
+            luck = randint(1, 3)
+
+            if luck == 1:
+                player_inventory.theft()
+                player_inventory.save()
+
+            if luck == 2:
+                player_inventory.depression()
+                player_inventory.save()
+
+            if luck == 3:
+                player_inventory.rain()
+                player_inventory.save()
+
+            """ The landmark section of the play function creates a unique storyline based on player inv."""
+
+            milestones = [[50, "Salem"], [37, "Eugene"], [23, "Oregon Border"], [0, "start"]]
+
+            for x in range(len(milestones) - 1):
+                if player_inventory.mile_counter >= milestones[x][0] and player_inventory.last_milestone == milestones[x + 1][1]:
+                    ms = Landmark(milestones[x][1], player_inventory)
+                    print(landmarks[milestones[x][1]]["story"])
+                    player_inventory.last_milestone = milestones[x][1]
+                    player_inventory.save()
+                    landmark_outcomes(milestones[x][1], player_inventory)
+                    # Will likely error at the end of the game without another line of code.
+
         if request.POST.get("move", None) == str(2):
-            pass
+            player_inventory.day_counter += 1
+            for i in player_inventory.characters.all():
+                if i.description <= 100:
+                    i.description += 20
+                if i.description > 100:
+                    i.description = 100
 
         if request.POST.get("move", None) == str(3):
-            pass
+            places = []
+            for i in place_list.keys():
+                places.append(i)
+            find = choice(places)
+            print(place_list[find]["description"])
+            print(place_list[find]["find"])
+
+            #Add decision
+            #Add ability to unpack item
 
         return JsonResponse({'message': 'success'})
     return JsonResponse({'message': 'fail'})
