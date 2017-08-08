@@ -19,93 +19,48 @@ $('#gameplay').keyup(function(e){
         $(this).trigger("enterKey");
     }
 });
+//
+// $('#name5').bind("enterKey",function(e){
+//    e.preventDefault();
+//
+//    $.ajax({
+//        type: 'POST',
+//        url: '/game/gameplay_entry/',
+//        data: {
+//            choice2: $('#name2').val(),
+//            choice3: $('#name3').val(),
+//            choice4: $('#name4').val(),
+//            choice5: $('#name5').val()
+//     },
+//        success:function(data){
+//            console.log(data);
+//            // window.location.href = "/game/packing/";
+//        }
+//    })
+// });
+// $('#name5').keyup(function(e){
+//     if(e.keyCode == 13)
+//     {
+//         $(this).trigger("enterKey");
+//     }
+// });
 
-$('#name2').bind("enterKey",function(e){
-   e.preventDefault();
-
-   $.ajax({
-       type: 'POST',
-       url: '/game/gameplay_entry/',
-       data: {
-           choice: $('#name2').val()
-    },
-       success:function(data){
-           console.log(data);
-
-       }
-   })
-});
-$('#name2').keyup(function(e){
-    if(e.keyCode == 13)
-    {
-        $(this).trigger("enterKey");
-    }
-});
-
-$('#name3').bind("enterKey",function(e){
-   e.preventDefault();
-
-   $.ajax({
-       type: 'POST',
-       url: '/game/gameplay_entry/',
-       data: {
-           choice: $('#name3').val()
-    },
-       success:function(data){
-           console.log(data);
-
-       }
-   })
-});
-$('#name3').keyup(function(e){
-    if(e.keyCode == 13)
-    {
-        $(this).trigger("enterKey");
-    }
-});
-
-$('#name4').bind("enterKey",function(e){
-   e.preventDefault();
+$( "#names" ).click(function() {
 
    $.ajax({
        type: 'POST',
-       url: '/game/gameplay_entry/',
+       url: '/game/names_entry/',
        data: {
-           choice: $('#name4').val()
-    },
-       success:function(data){
-           console.log(data);
-
-       }
-   })
-});
-$('#name4').keyup(function(e){
-    if(e.keyCode == 13)
-    {
-        $(this).trigger("enterKey");
-    }
-});
-
-$('#name5').bind("enterKey",function(e){
-   e.preventDefault();
-
-   $.ajax({
-       type: 'POST',
-       url: '/game/gameplay_entry/',
-       data: {
-           choice: $('#name5').val()
+           choice2: $('#name2').val(),
+           choice3: $('#name3').val(),
+           choice4: $('#name4').val(),
+           choice5: $('#name5').val()
     },
        success:function(data){
            console.log(data);
            window.location.href = "/game/packing/";
        }
    })
-});
-$('#name5').keyup(function(e){
-    if(e.keyCode == 13)
-    {
-        $(this).trigger("enterKey");
-    }
 });
 
 // There may be a way to do this systematically for name2, name3, name4.
@@ -115,7 +70,7 @@ $('#pack').bind("enterKey",function(e){
 
    $.ajax({
        type: 'POST',
-       url: '/game/gameplay_entry/',
+       url: '/game/packing_entry/',
        data: {
            choice: $('#pack').val()
     },
@@ -165,3 +120,23 @@ $( "#depart" ).click(function() {
   window.location.href = "/game/play/";
 });
 
+$('#play').bind("enterKey",function(e){
+   e.preventDefault();
+
+   $.ajax({
+       type: 'POST',
+       url: '/game/play_entry/',
+       data: {
+           move: $('#play').val()
+    },
+       success:function(data){
+           console.log(data);
+       }
+   })
+});
+$('#play').keyup(function(e){
+    if(e.keyCode == 13)
+    {
+        $(this).trigger("enterKey");
+    }
+});

@@ -213,3 +213,8 @@ Design and simple travel graphic.
     dry/hot.
   Option to adjust pace.
   Choices at forks in trail, two paths.
+
+NEXT TO DO:
+Create a Game model.
+Begin to link up the gameplay.
+Remember to go to those commented out instantiations in views.py. 

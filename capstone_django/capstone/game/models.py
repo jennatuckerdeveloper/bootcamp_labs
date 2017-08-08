@@ -1,6 +1,6 @@
 from django.db import models
 from random import randrange
-
+from authentication.models import User
 
 class Character(models.Model):
 
@@ -96,6 +96,10 @@ An Inventory has an inventory list and a limit to the number of Items it can hol
 
 class Inventory(models.Model):
     name = models.CharField(max_length=100)
+    limit = models.IntegerField(blank=True, null=True)
+    day_counter = models.IntegerField(default=0)
+    mile_counter = models.IntegerField(default=0)
+    last_milestone = models.CharField(max_length=200, default="start")
 
     def __str__(self):
         return "{}: {}".format(self.name, self.items.all())
@@ -156,3 +160,6 @@ class Landmark(models.Model):
     Items will be systematically generated and connected to Landmarks by FK.
     """
 
+class Game(models.Model):
+    user = models.ForeignKey(User, related_name="user")
+    inventory = models.ForeignKey("Inventory", related_name="player_inv")

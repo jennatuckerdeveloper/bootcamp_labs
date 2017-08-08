@@ -6,6 +6,6 @@ import django
 
 django.setup()
 
-from game.models import Item, Inventory, Character, Landmark
-
+from game.models import Item, Inventory, Character, Landmark, Game
+from authentication.models import User
 

@@ -14,11 +14,11 @@
     <link rel="stylesheet" type="text/css" href="{% static 'game/css/styles.css' %}">
     <p>Before you head out, you have to decide what to bring.</p>
     <p>You have the following stores to choose from: </p>
-    <ul>
-    {% for x in initial_inventory%}
-        <li>{{x.name}}</li>
-    {% endfor %}
-    </ul>
+    <!--<ul>-->
+    <!--{% for x in initial_inventory.items.all %}-->
+        <!--<li>{{x.name}}</li>-->
+    <!--{% endfor %}-->
+    <!--</ul>-->
     <p>What do you want to pack?</p>
     <input type="text" id="pack"> <br>
     <p>Finished packing</p>

@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Item, Inventory, Character, Landmark
+from .models import Item, Inventory, Character, Landmark, Game
+from authentication.models import User
 from django.http import JsonResponse
+from random import randrange, choice, randint
+
 
 beginning_inventory = {
     "food": "A day's food for your team.",
@@ -41,27 +44,13 @@ landmarks = {"Oregon Border":
                   },
              }
 
-# initial_inv = Inventory.objects.create(name="initial_inv")
-# player_inv = Inventory.objects.create(name="player_inv")
-# place_inventory = Inventory.objects.create(name="place_inv")
-
-
-"""This help function instantiates characters and connects them to the player inventory."""
-
-
-def create_characters(name1, name2, name3, name4):
-    character1 = Character.objects.create(name=name1, inventory=player_inv)
-    character2 = Character.objects.create(name=name2, inventory=player_inv)
-    character3 = Character.objects.create(name=name3, inventory=player_inv)
-    character4 = Character.objects.create(name=name4, inventory=player_inv)
-
 
 """This helper function creates the initial inventory in packing view. """
 
 
 def create_initial_inventory():
+    initial_inv = Inventory.objects.create(name="initial_inv")
     items = []
-
     for x in beginning_inventory.keys():
         items.append(x)
     for x in range(len(beginning_inventory)):
@@ -73,11 +62,11 @@ def create_initial_inventory():
                 name = Item.objects.create(name=items[x], description=beginning_inventory[items[x]],
                                            inventory=initial_inv)
                 y += 1
-
+    return initial_inv
 
 """This helper function creates all the place inventories and found items in play view."""
 
-def create_place_inventories():
+def create_place_inventories(place_inventory):
     places = place_list.keys()
     for place in places:
         find = Item.objects.create(name=place, description=place_list[place],
@@ -110,14 +99,30 @@ def landmark_outcomes(name):
 def gameplay(request):
     return render(request, 'game/gameplay.html', {})
 
-    #Choice is returned in gameplay_entry view.
-
 
 def gameplay_entry(request):
     if request.method == 'POST':
-        choice = request.POST.get("choice", None)
-    return JsonResponse({"choice": choice})
+        print(request.user.username)
+        user = User.objects.get(username=request.user.username)
+        limit = 0
+        if request.POST.get("choice", None) == str(1):
+            limit = 15
+            print("1")
+        if request.POST.get("choice", None) == str(2):
+            limit = 10
+            print("2")
+        if request.POST.get("choice", None) == str(3):
+            limit = 5
+            print("3")
+        print(limit)
+        inv = Inventory(name="player_inv", limit=limit)
+        inv.save()
+        user.game = inv
+        user.save()
+        return JsonResponse({'message': 'success'})
+    return JsonResponse({'message': 'fail'})
 
+#This needs a try/except to ensure it's one of these three.
 
 def names(request):
     # create_characters() # add variables for name1 through name4
@@ -125,34 +130,68 @@ def names(request):
 
 
 def names_entry(request):
+
     if request.method == 'POST':
-        name2 = request.POST.get("name2", None)
-        name3 = request.POST.get("name2", None)
-        name4 = request.POST.get("name2", None)
-        name5 = request.POST.get("name2", None)
-    return JsonResponse({"name2": name2,
-                         "name3": name3,
-                         'name4': name4,
-                         'name5': name5,
-                         })
+        user = User.objects.get(username=request.user.username)
+        inv = user.game
+        Character.objects.create(name="You", inventory=inv)
+        Character.objects.create(name=request.POST.get('choice2', None), inventory=inv)
+        Character.objects.create(name=request.POST.get('choice3', None), inventory=inv)
+        Character.objects.create(name=request.POST.get('choice4', None), inventory=inv)
+        Character.objects.create(name=request.POST.get('choice5', None), inventory=inv)
+        user.save()
+        inv.save()
+        print(inv.characters.all)
+        return JsonResponse({'message': 'success'})
+    return JsonResponse({'message': 'fail'})
 
-    #This will probaly work with create_characters function to instantiate Characters linked to the player_inv.
+#This one doesn't print to the console properly.  Not sure why.
 
+def show_game(request):
+    user = User.objects.get(username=request.user.username)
+    return render(request, 'pages/show_game.html', {'user': user})
+
+#What is this function for?  Testing?
+
+
+
+"""
+The first version of packing and packing_entry created an initial inventory and changed inv to player inv.
+"""
 
 def packing(request):
-    # Turn most of this into a helper function that systematically creates an initial inventory
-    create_initial_inventory()
-    initial_inventory = initial_inv.items.all()
-    return render(request, 'game/packing.html', {"initial_inventory": initial_inventory})
 
-    #The form on this page needs to change the entered item's inventory to player_inventory.
-    #This page currently allows the user to laod the inivial_inv multiple times.
+    """
+    This second version of the function needs a dictionary to print out the names of the items.
+    """
+    # i_inv = create_initial_inventory()
+    # return render(request, 'game/packing.html', {"initial_inventory": i_inv})
+
+    return render(request, 'game/packing.html', {})
 
 
 def packing_entry(request):
+
+    """
+    This second version of the view function will need a dictionary to fill out descriptions.
+    This or the next two functions need to set limit on player_inventory items.
+    """
     if request.method == 'POST':
-        pack = request.POST.get("pack_item", None)
-    return JsonResponse({"pack_item)": pack})
+
+        user = User.objects.get(username=request.user.username)
+        inv = user.game
+        Item.objects.create(name=request.POST.get('choice', None), inventory=inv)
+        print(inv)
+
+        # user = User.objects.get(username=request.user.username)
+        # player_inventory = user.game
+        # to_pack = Item.objects.get(name=request.POST.get('choice', None))
+        # to_pack.inventory = player_inventory
+        # print(player_inventory)
+
+
+        return JsonResponse({'message': 'success'})
+    return JsonResponse({'message': 'fail'})
 
 
 def depart(request):
@@ -170,24 +209,60 @@ def depart_entry(request):
 
 
 def play(request):
-    create_place_inventories()
+
+    """This one is the heart of the game.
+    Template:
+        display mile_counter and day_counter (Do they need to be in the database to show in template?
+        User needs to be able to:
+            Walk
+            Random events
+            Forage / Scavenge (places)
+            Landmarks
+        This needs to allow the user to die / lose the game.
+        This needs to allow the user to win.
+    """
+
+    place_inventory = Inventory.objects.create(name="place_inv")
+    create_place_inventories(place_inventory)
     return render(request, 'game/play.html', {})
 
-"""This one is the heart of the game.  
-    User needs to be able to:  
-        Walk
-        Random events
-        Forage / Scavenge (places)
-        Landmarks
-    This needs to allow the user to die / lose the game.  
-    This needs to allow the user to win.
-"""
 
 
 def play_entry(request):
+    user = User.objects.get(username=request.user.username)
+    player_inventory = user.game
     if request.method == 'POST':
-        move = request.POST.get("move", None)
-    return JsonResponse({"move": move})
+        if request.POST.get("move", None) == str(1):
+            player_inventory.mile_counter += randint(12, 22)
+            player_inventory.day_counter += 1
+            player_inventory.save()
+            print("{} days on the trail.  {} miles covered.".format(player_inventory.day_counter, player_inventory.mile_counter))
+            for i in player_inventory.characters.all():
+                    i.description -= 5
+                    print(i.description)
+                    i.save()
+            for i in player_inventory.items.all():
+                if i.name == "food":
+                    i.inventory = None
+                    i.save()
+                    print(player_inventory)
+                    break
+#What's up with the indentation on this if/else statement???
+            else:
+                print("You have run out of food.")
+                for i in player_inventory.characters.all():
+                    i.description -= 20
+                    i.save()
+                    print(i.description)
+
+        if request.POST.get("move", None) == str(2):
+            pass
+
+        if request.POST.get("move", None) == str(3):
+            pass
+
+        return JsonResponse({'message': 'success'})
+    return JsonResponse({'message': 'fail'})
 
 
 def win(request):
