@@ -1,5 +1,5 @@
 from django.db import models
-from random import randrange
+from random import randrange, choice
 from authentication.models import User
 
 class Character(models.Model):
@@ -103,10 +103,10 @@ class Inventory(models.Model):
     mile_counter = models.IntegerField(default=0)
     last_milestone = models.CharField(max_length=200, default="start")
 
-    # food_warning = models.CharField(max_length=500, blank=True, null=True)
-    # death = models.CharField(max_length=500, blank=True, null=True)
-    # happening = models.CharField(max_length=500, blank=True, null=True)
-    # landmark = models.CharField(max_length=500, blank=True, null=True)
+    food_warning = models.CharField(max_length=500, blank=True, null=True)
+    death = models.TextField(max_length=5000, blank=True, null=True)
+    happening = models.CharField(max_length=500, blank=True, null=True)
+    landmark = models.CharField(max_length=500, blank=True, null=True)
     play_message = models.CharField(max_length=500, blank=True, null=True)
 
     def __str__(self):
@@ -130,29 +130,43 @@ class Inventory(models.Model):
         loss = []
         while luck > 0:
             for x in self.items.all():
-                if x.type != "character":
-                    if luck > 0:
-                        loss.append(x)
-                        x.inventory = None
-                        luck -= 1
-        print("A thief comes in the night and steals: ")
+                if luck > 0:
+                    loss.append(x)
+                    luck -= 1
+        message = "A thief comes in the night and steals the follow items: "
+        details = []
         for x in loss:
-            print(x.name)
+            x.inventory = None
+            x.save()
+            details.append(x.name)
+        for x in details:
+            message = message + "(" + x + ") "
+            self.happening = message
+        self.save()
 
 
     def depression(self):
-    #This function might need to be made more random.
+        people = []
         for x in self.characters.all():
-            if x.name == "You":
-                print("{} are depressed".format(x.name))
-                x.description -= 15
+            people.append(x.name)
+        person = choice(people)
+        depressed = self.characters.filter(name=person)
+        for i in depressed:
+            if i.name == "You":
+                self.happening = "{} are depressed.".format(i.name)
+                self.save()
+                i.description -= 15
+                i.save()
             else:
-                print("{} is depressed.".format(x.name))
-                x.description -= 15
-            break
+                self.happening = "{} is depressed.".format(i.name)
+                self.save()
+                i.description -= 15
+                i.save()
 
     def rain(self):
-        print("A cold rain comes.")
+        message = "A cold rain comes."
+        self.happening = message
+        self.save()
         for x in self.characters.all():
             x.description -= 10
 

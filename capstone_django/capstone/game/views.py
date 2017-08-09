@@ -7,20 +7,22 @@ from random import randrange, choice, randint
 
 
 """
-TO DO:
 
-How do I get the mile_count and day_count to appear on the play screen?  
-Same question for:  
-    Place finds
-    Landmarks 
+Main issues:
+Play page does not always reload.
+Only one line of character deaths will print despite five lines printing to console.
+    #Backup solution:  Allow only one character to die per day.  
+Play template first displays None and then automatically filters out None.  
+Need to end game when "You" dies.
+Create a quit() option. 
+
+Place finds
+Landmarks 
+
 *There may be more information that needs to go into the database.  
 *Does it go into the database?  Or can info be generated in the view, put into the 
     context dictionary, and brought into to the template?  
-*Essentially, these "print" functions should mostly be going to a single place on the play screen.  
-
-How do I end the game when "You" dies?  
-How do I create a quit() option?  
-
+    
 Create an inventory view screen with character health and what's in the pack.
 
 How do I limit what the user can viably enter?  Try/except?  
@@ -268,18 +270,37 @@ def play(request):
     mile_counter = player_inventory.mile_counter
     day_counter = player_inventory.day_counter
     play_message = player_inventory.play_message
+    food_warning = player_inventory.food_warning
+    death = player_inventory.death
+    happening = player_inventory.happening
+    landmark = player_inventory.landmark
 
-    return render(request, 'game/play.html', {"mile_counter": mile_counter, "day_counter": day_counter, "play_message": play_message})
+    return render(request, 'game/play.html', {
+        "mile_counter": mile_counter,
+        "day_counter": day_counter,
+        "play_message": play_message,
+        "food_warning": food_warning,
+        "death": death,
+        "happening": happening,
+        "lankmark": landmark,
+    })
 
 
 def play_entry(request):
+
     user = User.objects.get(username=request.user.username)
     player_inventory = user.game
-    mile_counter = player_inventory.mile_counter
-    day_counter = player_inventory.day_counter
-    play_message = player_inventory.play_message
     player_inventory.play_message = ""
+    player_inventory.food_warning = ""
+    player_inventory.death = ""
+    player_inventory.happening = ""
+    player_inventory.landmark = ""
     player_inventory.save()
+
+    """
+    The day_counter and mile_counter track each play and a day's food is lost.  
+    """
+
     if request.method == 'POST':
         if request.POST.get("move", None) == str(1):
             player_inventory.mile_counter += randint(12, 22)
@@ -295,10 +316,11 @@ def play_entry(request):
                     break
     #What's up with the indentation on this if/else statement???
             else:
-                warning = "You have run out of food."
+                player_inventory.food_warning = "You have run out of food."
+                player_inventory.save()
                 # player_inventory.play_message = warning
                 # player_inventory.save()
-                print(warning)
+                print(player_inventory.food_warning)
                 for i in player_inventory.characters.all():
                     i.description -= 20
                     i.save()
@@ -317,9 +339,11 @@ def play_entry(request):
                         dead.append(notice)
                 deaths = ""
                 for notice in dead:
-                    deaths = deaths + notice + "\n"
-                # player_inventory.play_message = message
-                # player_inventory.save()
+                    deaths = deaths + notice
+                print(deaths)
+                player_inventory.death = deaths
+                player_inventory.save()
+                #Despite printing the entire message to the terminal, only one line shows up in browser.
                         #How do I add an exit to end the game here???
 
             """ The luck portion of play function creates random losses to inventory or individual or group health."""
@@ -352,11 +376,14 @@ def play_entry(request):
 
         if request.POST.get("move", None) == str(2):
             player_inventory.day_counter += 1
+            player_inventory.save()
             for i in player_inventory.characters.all():
                 if i.description <= 100:
                     i.description += 20
+                    i.save()
                 if i.description > 100:
                     i.description = 100
+                    i.save()
 
         if request.POST.get("move", None) == str(3):
             places = []
@@ -371,11 +398,9 @@ def play_entry(request):
 
         return JsonResponse({
             'message': 'success',
-            "mile_counter": mile_counter,
-            "day_counter": day_counter,
-            "play_message": play_message,
-            "warning": warning,
-            "deaths": deaths,
+            "mile_counter": player_inventory.mile_counter,
+            "day_counter": player_inventory.day_counter,
+            "play_message": player_inventory.play_message,
         })
     else:
         print("No")
