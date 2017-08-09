@@ -103,10 +103,10 @@ class Inventory(models.Model):
     mile_counter = models.IntegerField(default=0)
     last_milestone = models.CharField(max_length=200, default="start")
 
-    food_warning = models.CharField(max_length=500, blank=True, null=True)
-    death = models.CharField(max_length=500, blank=True, null=True)
-    happening = models.CharField(max_length=500, blank=True, null=True)
-    landmark = models.CharField(max_length=500, blank=True, null=True)
+    # food_warning = models.CharField(max_length=500, blank=True, null=True)
+    # death = models.CharField(max_length=500, blank=True, null=True)
+    # happening = models.CharField(max_length=500, blank=True, null=True)
+    # landmark = models.CharField(max_length=500, blank=True, null=True)
     play_message = models.CharField(max_length=500, blank=True, null=True)
 
     def __str__(self):

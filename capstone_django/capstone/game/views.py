@@ -296,8 +296,9 @@ def play_entry(request):
     #What's up with the indentation on this if/else statement???
             else:
                 warning = "You have run out of food."
-                player_inventory.play_message = warning
-                player_inventory.save()
+                # player_inventory.play_message = warning
+                # player_inventory.save()
+                print(warning)
                 for i in player_inventory.characters.all():
                     i.description -= 20
                     i.save()
@@ -314,11 +315,11 @@ def play_entry(request):
                     if i.name == "You":
                         notice = "You have died of hunger and exhaustion."
                         dead.append(notice)
-                message = ""
+                deaths = ""
                 for notice in dead:
-                    message = message + notice + "\n"
-                player_inventory.play_message = message
-                player_inventory.save()
+                    deaths = deaths + notice + "\n"
+                # player_inventory.play_message = message
+                # player_inventory.save()
                         #How do I add an exit to end the game here???
 
             """ The luck portion of play function creates random losses to inventory or individual or group health."""
@@ -368,7 +369,14 @@ def play_entry(request):
             #Add decision
             #Add ability to unpack item
 
-        return JsonResponse({'message': 'success', "mile_counter": mile_counter, "day_counter": day_counter, "play_message": play_message})
+        return JsonResponse({
+            'message': 'success',
+            "mile_counter": mile_counter,
+            "day_counter": day_counter,
+            "play_message": play_message,
+            "warning": warning,
+            "deaths": deaths,
+        })
     else:
         print("No")
         return JsonResponse({'message': 'fail'})
