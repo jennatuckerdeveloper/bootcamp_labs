@@ -6,7 +6,7 @@ class Character(models.Model):
 
     name = models.CharField(max_length=100)
     description = models.IntegerField(default=100)
-    inventory = models.ForeignKey("Inventory", related_name="characters")
+    inventory = models.ForeignKey("Inventory", related_name="characters", blank=True, null=True)
 
     """
     The __str__ function prints a readable description of characters' health status.
@@ -96,10 +96,18 @@ An Inventory has an inventory list and a limit to the number of Items it can hol
 
 class Inventory(models.Model):
     name = models.CharField(max_length=100)
+
     limit = models.IntegerField(blank=True, null=True)
+
     day_counter = models.IntegerField(default=0)
     mile_counter = models.IntegerField(default=0)
     last_milestone = models.CharField(max_length=200, default="start")
+
+    food_warning = models.CharField(max_length=500, blank=True, null=True)
+    death = models.CharField(max_length=500, blank=True, null=True)
+    happening = models.CharField(max_length=500, blank=True, null=True)
+    landmark = models.CharField(max_length=500, blank=True, null=True)
+    play_message = models.CharField(max_length=500, blank=True, null=True)
 
     def __str__(self):
         return "{}: {}".format(self.name, self.items.all())

@@ -131,6 +131,13 @@ $('#play').bind("enterKey",function(e){
     },
        success:function(data){
            console.log(data);
+           $('#day_counter').html(data.day_counter);
+           $('#mile_counter').html(data.mile_counter);
+           $('#play_message').html(data.play_message);
+           location.href = "/game/play/";
+           location.reload(true);
+
+
        }
    })
 });
@@ -140,3 +147,4 @@ $('#play').keyup(function(e){
         $(this).trigger("enterKey");
     }
 });
+

@@ -6,6 +6,30 @@ from django.http import JsonResponse
 from random import randrange, choice, randint
 
 
+"""
+TO DO:
+
+How do I get the mile_count and day_count to appear on the play screen?  
+Same question for:  
+    Place finds
+    Landmarks 
+*There may be more information that needs to go into the database.  
+*Does it go into the database?  Or can info be generated in the view, put into the 
+    context dictionary, and brought into to the template?  
+*Essentially, these "print" functions should mostly be going to a single place on the play screen.  
+
+How do I end the game when "You" dies?  
+How do I create a quit() option?  
+
+Create an inventory view screen with character health and what's in the pack.
+
+How do I limit what the user can viably enter?  Try/except?  
+How do I limit viable item names to select list?
+How do I limit the number of items in the pack?  
+How do I let the user unpack an item?  
+
+"""
+
 beginning_inventory = {
     "food": "A day's food for your team.",
     "cd": "A cd",
@@ -238,44 +262,63 @@ def play(request):
 
     place_inventory = Inventory.objects.create(name="place_inv")
     create_place_inventories(place_inventory)
-    return render(request, 'game/play.html', {})
 
+    user = User.objects.get(username=request.user.username)
+    player_inventory = user.game
+    mile_counter = player_inventory.mile_counter
+    day_counter = player_inventory.day_counter
+    play_message = player_inventory.play_message
+
+    return render(request, 'game/play.html', {"mile_counter": mile_counter, "day_counter": day_counter, "play_message": play_message})
 
 
 def play_entry(request):
     user = User.objects.get(username=request.user.username)
     player_inventory = user.game
+    mile_counter = player_inventory.mile_counter
+    day_counter = player_inventory.day_counter
+    play_message = player_inventory.play_message
+    player_inventory.play_message = ""
+    player_inventory.save()
     if request.method == 'POST':
         if request.POST.get("move", None) == str(1):
             player_inventory.mile_counter += randint(12, 22)
             player_inventory.day_counter += 1
             player_inventory.save()
-            print("{} days on the trail.  {} miles covered.".format(player_inventory.day_counter, player_inventory.mile_counter))
             for i in player_inventory.characters.all():
                     i.description -= 5
-                    print(i.description)
                     i.save()
             for i in player_inventory.items.all():
                 if i.name == "food":
                     i.inventory = None
                     i.save()
-                    print(player_inventory)
                     break
-#What's up with the indentation on this if/else statement???
+    #What's up with the indentation on this if/else statement???
             else:
-                print("You have run out of food.")
+                warning = "You have run out of food."
+                player_inventory.play_message = warning
+                player_inventory.save()
                 for i in player_inventory.characters.all():
                     i.description -= 20
                     i.save()
                     print(i.description)
 
             for i in player_inventory.characters.all():
+                dead = []
                 if i.description <= 0:
                     if i.name != "You":
-                        print("{} has died of hunger and exhaustion.".format(i.name))
                         i.inventory = None
+                        i.save()
+                        notice = "{} has died of hunger and exhaustion.".format(i.name)
+                        dead.append(notice)
                     if i.name == "You":
-                        print("You have died of hunger and exhaustion.")
+                        notice = "You have died of hunger and exhaustion."
+                        dead.append(notice)
+                message = ""
+                for notice in dead:
+                    message = message + notice + "\n"
+                player_inventory.play_message = message
+                player_inventory.save()
                         #How do I add an exit to end the game here???
 
             """ The luck portion of play function creates random losses to inventory or individual or group health."""
@@ -325,8 +368,10 @@ def play_entry(request):
             #Add decision
             #Add ability to unpack item
 
-        return JsonResponse({'message': 'success'})
-    return JsonResponse({'message': 'fail'})
+        return JsonResponse({'message': 'success', "mile_counter": mile_counter, "day_counter": day_counter, "play_message": play_message})
+    else:
+        print("No")
+        return JsonResponse({'message': 'fail'})
 
 
 def win(request):
