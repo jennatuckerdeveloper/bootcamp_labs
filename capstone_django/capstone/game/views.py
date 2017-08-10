@@ -10,14 +10,14 @@ from random import randrange, choice, randint
 
 To do;
 Need to end game when "You" dies.
-Try/Excepts to limit options on all screens.  
 Win condition.
 
+Try/Excepts to limit options on all screens.  
+
 Packing limits.  
-Unpack screen.  
+Unpack screen.
 
 Inventory view screen:  characters and items 
-
 
 *Does all info go into the database?  Or can info be generated in the view, put into the 
     context dictionary, and brought into to the template?  
@@ -346,6 +346,9 @@ def play_entry(request):
                     player_inventory.last_milestone = milestones[x][1]
                     player_inventory.save()
                     landmark_outcomes(milestones[x][1], player_inventory)
+
+            if player_inventory.mile_counter > 1000:
+                player_inventory.play_message = "You have reached the Portland metro area!"
 
         if request.POST.get("move", None) == str(2):
             player_inventory.day_counter += 1

@@ -19,31 +19,6 @@ $('#gameplay').keyup(function(e){
         $(this).trigger("enterKey");
     }
 });
-//
-// $('#name5').bind("enterKey",function(e){
-//    e.preventDefault();
-//
-//    $.ajax({
-//        type: 'POST',
-//        url: '/game/gameplay_entry/',
-//        data: {
-//            choice2: $('#name2').val(),
-//            choice3: $('#name3').val(),
-//            choice4: $('#name4').val(),
-//            choice5: $('#name5').val()
-//     },
-//        success:function(data){
-//            console.log(data);
-//            // window.location.href = "/game/packing/";
-//        }
-//    })
-// });
-// $('#name5').keyup(function(e){
-//     if(e.keyCode == 13)
-//     {
-//         $(this).trigger("enterKey");
-//     }
-// });
 
 $( "#names" ).click(function() {
 
@@ -139,6 +114,9 @@ $('#play').bind("enterKey",function(e){
            $('#find').html(data.find);
            $('#landmark').html(data.landmark);
            $('#play_message').html(data.play_message);
+           if (data.mile_counter >= 60) {
+               window.location.href = "/game/win/";
+           }
        }
    })
 });

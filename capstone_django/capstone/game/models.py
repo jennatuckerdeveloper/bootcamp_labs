@@ -197,3 +197,4 @@ class Landmark(models.Model):
 class Game(models.Model):
     user = models.ForeignKey(User, related_name="user")
     inventory = models.ForeignKey("Inventory", related_name="player_inv")
+    status = models.CharField(max_length=200, default="active")
