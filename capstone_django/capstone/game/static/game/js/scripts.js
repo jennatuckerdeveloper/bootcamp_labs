@@ -133,11 +133,12 @@ $('#play').bind("enterKey",function(e){
            console.log(data);
            $('#day_counter').html(data.day_counter);
            $('#mile_counter').html(data.mile_counter);
+           $('#food_warning').html(data.food_warning);
+           $('#death').html(data.death);
+           $('#happening').html(data.happening);
+           $('#find').html(data.find);
+           $('#landmark').html(data.landmark);
            $('#play_message').html(data.play_message);
-           location.href = "/game/play/";
-           location.reload(true);
-
-
        }
    })
 });

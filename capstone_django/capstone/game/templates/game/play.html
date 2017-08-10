@@ -13,13 +13,14 @@
 <body>
     {% block body %}
     <div id="game_info">
-        <p id="day_counter"> {{ day_counter }} days on the trail.</p>
-        <p id="mile_counter"> {{ mile_counter }} miles travelled.</p>
-        <p id="play_message"> {{ play_message }} </p>
-        <p id="food_warning"> {{ food_warning }} </p>
-        <p id="death"> {{ death }} </p>
-        <p id="happening"> {{ happening }} </p>
-        <p id="landmark"> {{ landmark }} </p>
+        <p><span id="day_counter">{{ day_counter }}</span> days on the trail.</p>
+        <p><span id="mile_counter">{{ mile_counter }}</span> miles travelled.</p>
+        <p><span id="food_warning">{{ food_warning }}</span></p>
+        <p><span id="death">{{ death }}</span></p>
+        <p><span id="happening"> {{ happening }}</span></p>
+        <p><span id="find">{{ find }}</span></p>
+        <p><span id="landmark">{{ landmark }}</span></p>
+        <p><span id="play_message">{{ play_message }}</span></p>
     </div>
     <div id="game_menu">
     <p>       What do you want to do? </p>
@@ -29,7 +30,6 @@
                 3) Scavenge / forage nearby area. <br>
                 4) Search through packs. <br>
                 5) Look at the map.  <br>
-                6) Quit <br>
       </p>
     <input type="text" id="play"> <br>
      </div>

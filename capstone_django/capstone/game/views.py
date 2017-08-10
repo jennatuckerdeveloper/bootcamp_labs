@@ -8,27 +8,19 @@ from random import randrange, choice, randint
 
 """
 
-Main issues:
-Play page does not always reload.
-Only one line of character deaths will print despite five lines printing to console.
-    #Backup solution:  Allow only one character to die per day.  
-Play template first displays None and then automatically filters out None.  
+To do;
 Need to end game when "You" dies.
-Create a quit() option. 
+Try/Excepts to limit options on all screens.  
+Win condition.
 
-Place finds
-Landmarks 
+Packing limits.  
+Unpack screen.  
 
-*There may be more information that needs to go into the database.  
-*Does it go into the database?  Or can info be generated in the view, put into the 
+Inventory view screen:  characters and items 
+
+
+*Does all info go into the database?  Or can info be generated in the view, put into the 
     context dictionary, and brought into to the template?  
-    
-Create an inventory view screen with character health and what's in the pack.
-
-How do I limit what the user can viably enter?  Try/except?  
-How do I limit viable item names to select list?
-How do I limit the number of items in the pack?  
-How do I let the user unpack an item?  
 
 """
 
@@ -42,40 +34,43 @@ beginning_inventory = {
 place_list = {
     "camp":
         {"description": "a camp",
-         "find": "food"
+         "find_name": "food",
+         "find_description": "a day's food",
          },
     "hotel":
         {"description": "a hotel",
-         "find": "Bible",
+         "find_name": "Bible",
+         "find_description": "a Gideon Bible"
          },
     "pack":
         {"description": "a pack",
-         "find": "cd"
+         "find_name": "cd",
+         "find_description": "a cd"
          }
             }
 
 landmarks = {"Oregon Border":
                  {"story": "You have reached the Oregon Border.  You make camp on... ",
                   "key": "Bible",
-                  "gain": "cd",
+                  "gain": "food",
                   "loss": "food",
                   "story_loss": "You lose one day's food.",
                   "story_gain": "After finding the Bible in your packs, the group allows you to rest on their land and offers you a gift of food to help you on your way."
                   },
              "Eugene":
-                 {"story": "You have reached Eugene.",
+                 {"story": "You have reached Eugene.  You run into another party of campers...",
                   "key": "Bible",
                   "gain": "cd",
                   "loss": "food",
-                  "story_loss": "You lose one day's food.",
+                  "story_loss": "You give them one day's food.",
                   "story_gain": "You receive a CD.",
                   },
              "Salem":
-                 {"story": "You have reached Salem.",
+                 {"story": "You have reached Salem.  A homesteader gives your party beer...",
                   "key": "Bible",
-                  "gain": "cd",
+                  "gain": "book",
                   "loss": "food",
-                  "story_loss": "You lose a day's food.",
+                  "story_loss": "You lose a day's food throwing up.",
                   "story_gain": "You receive a book.",
                   },
              }
@@ -110,7 +105,6 @@ def create_place_inventories(place_inventory):
 
 
 def landmark_outcomes(name, player_inventory):
-    print(player_inventory)
     milestone = landmarks[name]
     ldmk = Landmark.objects.create(name=name)
     find = Item.objects.create(name=milestone["gain"], description=milestone["gain"], landmark=ldmk, inventory=None)
@@ -118,22 +112,22 @@ def landmark_outcomes(name, player_inventory):
     for item in player_inventory.items.all():
         if item.name == milestone["key"]:
             has_key = True
-            print(True)
             break
         else:
             has_key = False
-            print(False)
     if has_key == True:
         find.landmark = None
         find.inventory = player_inventory
         find.save()
-        print(player_inventory)
+        player_inventory.play_message = milestone["story_gain"]
     if has_key == False:
         for item in player_inventory.items.all():
             if item.name == milestone["loss"]:
                 item.inventory = None
                 item.save()
-                print(player_inventory)
+                break
+        player_inventory.play_message = milestone["story_loss"]
+
 
 
 def gameplay(request):
@@ -142,19 +136,14 @@ def gameplay(request):
 
 def gameplay_entry(request):
     if request.method == 'POST':
-        print(request.user.username)
         user = User.objects.get(username=request.user.username)
         limit = 0
         if request.POST.get("choice", None) == str(1):
             limit = 15
-            print("1")
         if request.POST.get("choice", None) == str(2):
             limit = 10
-            print("2")
         if request.POST.get("choice", None) == str(3):
             limit = 5
-            print("3")
-        print(limit)
         inv = Inventory(name="player_inv", limit=limit)
         inv.save()
         user.game = inv
@@ -165,7 +154,6 @@ def gameplay_entry(request):
 #This needs a try/except to ensure it's one of these three.
 
 def names(request):
-    # create_characters() # add variables for name1 through name4
      return render(request, 'game/names.html', {})
 
 
@@ -181,11 +169,9 @@ def names_entry(request):
         Character.objects.create(name=request.POST.get('choice5', None), inventory=inv)
         user.save()
         inv.save()
-        print(inv.characters.all)
         return JsonResponse({'message': 'success'})
     return JsonResponse({'message': 'fail'})
 
-#This one doesn't print to the console properly.  Not sure why.
 
 def show_game(request):
     user = User.objects.get(username=request.user.username)
@@ -204,8 +190,6 @@ def packing(request):
     """
     This second version of the function needs a dictionary to print out the names of the items.
     """
-    # i_inv = create_initial_inventory()
-    # return render(request, 'game/packing.html', {"initial_inventory": i_inv})
 
     return render(request, 'game/packing.html', {})
 
@@ -222,13 +206,6 @@ def packing_entry(request):
         inv = user.game
         Item.objects.create(name=request.POST.get('choice', None), inventory=inv)
         print(inv)
-
-        # user = User.objects.get(username=request.user.username)
-        # player_inventory = user.game
-        # to_pack = Item.objects.get(name=request.POST.get('choice', None))
-        # to_pack.inventory = player_inventory
-        # print(player_inventory)
-
 
         return JsonResponse({'message': 'success'})
     return JsonResponse({'message': 'fail'})
@@ -269,20 +246,10 @@ def play(request):
     player_inventory = user.game
     mile_counter = player_inventory.mile_counter
     day_counter = player_inventory.day_counter
-    play_message = player_inventory.play_message
-    food_warning = player_inventory.food_warning
-    death = player_inventory.death
-    happening = player_inventory.happening
-    landmark = player_inventory.landmark
 
     return render(request, 'game/play.html', {
         "mile_counter": mile_counter,
         "day_counter": day_counter,
-        "play_message": play_message,
-        "food_warning": food_warning,
-        "death": death,
-        "happening": happening,
-        "lankmark": landmark,
     })
 
 
@@ -295,6 +262,7 @@ def play_entry(request):
     player_inventory.death = ""
     player_inventory.happening = ""
     player_inventory.landmark = ""
+    player_inventory.find = ""
     player_inventory.save()
 
     """
@@ -306,45 +274,49 @@ def play_entry(request):
             player_inventory.mile_counter += randint(12, 22)
             player_inventory.day_counter += 1
             player_inventory.save()
+            walkers = []
+
             for i in player_inventory.characters.all():
-                    i.description -= 5
-                    i.save()
+                i.description -= 5
+                i.save()
+
             for i in player_inventory.items.all():
                 if i.name == "food":
                     i.inventory = None
                     i.save()
                     break
-    #What's up with the indentation on this if/else statement???
             else:
                 player_inventory.food_warning = "You have run out of food."
                 player_inventory.save()
-                # player_inventory.play_message = warning
-                # player_inventory.save()
-                print(player_inventory.food_warning)
                 for i in player_inventory.characters.all():
                     i.description -= 20
                     i.save()
-                    print(i.description)
 
+            deaths = []
             for i in player_inventory.characters.all():
-                dead = []
                 if i.description <= 0:
-                    if i.name != "You":
-                        i.inventory = None
-                        i.save()
-                        notice = "{} has died of hunger and exhaustion.".format(i.name)
-                        dead.append(notice)
-                    if i.name == "You":
-                        notice = "You have died of hunger and exhaustion."
-                        dead.append(notice)
-                deaths = ""
-                for notice in dead:
-                    deaths = deaths + notice
-                print(deaths)
-                player_inventory.death = deaths
-                player_inventory.save()
-                #Despite printing the entire message to the terminal, only one line shows up in browser.
-                        #How do I add an exit to end the game here???
+                    deaths.append(i)
+            print(deaths)
+            if len(deaths) > 0:
+                person = choice(deaths)
+                if person.name != "You":
+                    person.inventory = None
+                    person.save()
+                    player_inventory.death = "{} has died of hunger and exhaustion.".format(person.name)
+                    player_inventory.save()
+                    deaths.remove(person)
+                if person.name == "You":
+                    person.inventory = None
+                    person.save()
+                    player_inventory.death = "You have died of hunger and exhaustion."
+                    player_inventory.save()
+                    deaths.remove(person)
+                for i in deaths:
+                    i.description = 5
+                    i.save()
+                    print(i)
+
+
 
             """ The luck portion of play function creates random losses to inventory or individual or group health."""
             luck = randint(1, 3)
@@ -368,11 +340,12 @@ def play_entry(request):
             for x in range(len(milestones) - 1):
                 if player_inventory.mile_counter >= milestones[x][0] and player_inventory.last_milestone == milestones[x + 1][1]:
                     ms = Landmark(milestones[x][1], player_inventory)
-                    print(landmarks[milestones[x][1]]["story"])
+                    player_inventory.landmark = (landmarks[milestones[x][1]]["story"])
+                    player_inventory.save()
+                    print(player_inventory.landmark)
                     player_inventory.last_milestone = milestones[x][1]
                     player_inventory.save()
                     landmark_outcomes(milestones[x][1], player_inventory)
-                    # Will likely error at the end of the game without another line of code.
 
         if request.POST.get("move", None) == str(2):
             player_inventory.day_counter += 1
@@ -390,8 +363,9 @@ def play_entry(request):
             for i in place_list.keys():
                 places.append(i)
             find = choice(places)
-            print(place_list[find]["description"])
-            print(place_list[find]["find"])
+            player_inventory.find = ("You find " + place_list[find]["description"] + " with " + place_list[find]["find_description"] + ".")
+            player_inventory.save()
+            gain = Item.objects.create(name=place_list[find]["find_name"], inventory=player_inventory)
 
             #Add decision
             #Add ability to unpack item
@@ -401,9 +375,13 @@ def play_entry(request):
             "mile_counter": player_inventory.mile_counter,
             "day_counter": player_inventory.day_counter,
             "play_message": player_inventory.play_message,
+            "food_warning": player_inventory.food_warning,
+            "death": player_inventory.death,
+            "happening": player_inventory.happening,
+            "find": player_inventory.find,
+            "landmark": player_inventory.landmark,
         })
     else:
-        print("No")
         return JsonResponse({'message': 'fail'})
 
 

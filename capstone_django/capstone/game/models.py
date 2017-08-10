@@ -103,11 +103,12 @@ class Inventory(models.Model):
     mile_counter = models.IntegerField(default=0)
     last_milestone = models.CharField(max_length=200, default="start")
 
-    food_warning = models.CharField(max_length=500, blank=True, null=True)
-    death = models.TextField(max_length=5000, blank=True, null=True)
-    happening = models.CharField(max_length=500, blank=True, null=True)
-    landmark = models.CharField(max_length=500, blank=True, null=True)
-    play_message = models.CharField(max_length=500, blank=True, null=True)
+    food_warning = models.CharField(max_length=500, default="", blank=True, null=True)
+    death = models.TextField(max_length=5000, default="", blank=True, null=True)
+    happening = models.CharField(max_length=500, default="", blank=True, null=True)
+    landmark = models.CharField(max_length=500, default="", blank=True, null=True)
+    find = models.CharField(max_length=500, default="", blank=True, null=True)
+    play_message = models.CharField(max_length=500, default="", blank=True, null=True)
 
     def __str__(self):
         return "{}: {}".format(self.name, self.items.all())
@@ -126,13 +127,14 @@ class Inventory(models.Model):
             print(each)
 
     def theft(self):
+        print("Theft triggered")
         luck = randrange(1, 3)
         loss = []
-        while luck > 0:
-            for x in self.items.all():
-                if luck > 0:
-                    loss.append(x)
-                    luck -= 1
+        for x in self.items.all():
+            if luck > 0:
+                loss.append(x)
+                luck -= 1
+        # print('after loop luck: {}'.format(luck))
         message = "A thief comes in the night and steals the follow items: "
         details = []
         for x in loss:
@@ -146,6 +148,7 @@ class Inventory(models.Model):
 
 
     def depression(self):
+        print("Depression triggered.")
         people = []
         for x in self.characters.all():
             people.append(x.name)
@@ -155,15 +158,24 @@ class Inventory(models.Model):
             if i.name == "You":
                 self.happening = "{} are depressed.".format(i.name)
                 self.save()
-                i.description -= 15
-                i.save()
+                if i.description >= 20:
+                    i.description -= 15
+                    i.save()
+                else:
+                    i.description = 5
+                    i.save()
             else:
                 self.happening = "{} is depressed.".format(i.name)
                 self.save()
-                i.description -= 15
-                i.save()
+                if i.description >= 20:
+                    i.description -= 15
+                    i.save()
+                else:
+                    i.description = 5
+                    i.save()
 
     def rain(self):
+        print("Rain triggered.")
         message = "A cold rain comes."
         self.happening = message
         self.save()
