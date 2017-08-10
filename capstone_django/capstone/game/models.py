@@ -96,7 +96,7 @@ An Inventory has an inventory list and a limit to the number of Items it can hol
 
 class Inventory(models.Model):
     name = models.CharField(max_length=100)
-
+    status = models.CharField(max_length=200, default="active")
     limit = models.IntegerField(blank=True, null=True)
 
     day_counter = models.IntegerField(default=0)
@@ -197,4 +197,4 @@ class Landmark(models.Model):
 class Game(models.Model):
     user = models.ForeignKey(User, related_name="user")
     inventory = models.ForeignKey("Inventory", related_name="player_inv")
-    status = models.CharField(max_length=200, default="active")
+

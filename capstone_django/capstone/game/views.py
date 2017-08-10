@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpResponse
 from .models import Item, Inventory, Character, Landmark, Game
 from authentication.models import User
@@ -9,8 +9,6 @@ from random import randrange, choice, randint
 """
 
 To do;
-Need to end game when "You" dies.
-Win condition.
 
 Try/Excepts to limit options on all screens.  
 
@@ -239,153 +237,171 @@ def play(request):
         This needs to allow the user to win.
     """
 
-    place_inventory = Inventory.objects.create(name="place_inv")
-    create_place_inventories(place_inventory)
-
     user = User.objects.get(username=request.user.username)
     player_inventory = user.game
-    mile_counter = player_inventory.mile_counter
-    day_counter = player_inventory.day_counter
 
-    return render(request, 'game/play.html', {
-        "mile_counter": mile_counter,
-        "day_counter": day_counter,
-    })
+    if player_inventory.status == "active":
+
+        place_inventory = Inventory.objects.create(name="place_inv")
+        create_place_inventories(place_inventory)
+
+        user = User.objects.get(username=request.user.username)
+        player_inventory = user.game
+        mile_counter = player_inventory.mile_counter
+        day_counter = player_inventory.day_counter
+
+        return render(request, 'game/play.html', {
+            "mile_counter": mile_counter,
+            "day_counter": day_counter,
+        })
+    elif player_inventory.status == "win":
+        return render(request, 'game/win.html', {})
+
+    elif player_inventory.status == "dead":
+        return HttpResponseRedirect("/game/gameplay/")
 
 
 def play_entry(request):
 
     user = User.objects.get(username=request.user.username)
     player_inventory = user.game
-    player_inventory.play_message = ""
-    player_inventory.food_warning = ""
-    player_inventory.death = ""
-    player_inventory.happening = ""
-    player_inventory.landmark = ""
-    player_inventory.find = ""
-    player_inventory.save()
 
-    """
-    The day_counter and mile_counter track each play and a day's food is lost.  
-    """
+    if player_inventory.status == "active":
 
-    if request.method == 'POST':
-        if request.POST.get("move", None) == str(1):
-            player_inventory.mile_counter += randint(12, 22)
-            player_inventory.day_counter += 1
-            player_inventory.save()
-            walkers = []
+        player_inventory.play_message = ""
+        player_inventory.food_warning = ""
+        player_inventory.death = ""
+        player_inventory.happening = ""
+        player_inventory.landmark = ""
+        player_inventory.find = ""
+        player_inventory.save()
 
-            for i in player_inventory.characters.all():
-                i.description -= 5
-                i.save()
+        """
+        The day_counter and mile_counter track each play and a day's food is lost.  
+        """
 
-            for i in player_inventory.items.all():
-                if i.name == "food":
-                    i.inventory = None
+        if request.method == 'POST':
+            if request.POST.get("move", None) == str(1):
+                player_inventory.mile_counter += randint(12, 22)
+                player_inventory.day_counter += 1
+                player_inventory.save()
+
+                for i in player_inventory.characters.all():
+                    i.description -= 5
                     i.save()
-                    break
-            else:
-                player_inventory.food_warning = "You have run out of food."
+
+                for i in player_inventory.items.all():
+                    if i.name == "food":
+                        i.inventory = None
+                        i.save()
+                        break
+                else:
+                    player_inventory.food_warning = "You have run out of food."
+                    player_inventory.save()
+                    for i in player_inventory.characters.all():
+                        i.description -= 20
+                        i.save()
+
+                deaths = []
+                for i in player_inventory.characters.all():
+                    if i.description <= 0:
+                        deaths.append(i)
+                print(deaths)
+                if len(deaths) > 0:
+                    person = choice(deaths)
+                    if person.name != "You":
+                        person.inventory = None
+                        person.save()
+                        player_inventory.death = "{} has died of hunger and exhaustion.".format(person.name)
+                        player_inventory.save()
+                        deaths.remove(person)
+                    if person.name == "You":
+                        person.inventory = None
+                        person.save()
+                        player_inventory.death = "You have died of hunger and exhaustion."
+                        player_inventory.save()
+                        deaths.remove(person)
+                        player_inventory.status = "dead"
+                        player_inventory.save()
+                    for i in deaths:
+                        i.description = 5
+                        i.save()
+                        print(i)
+
+                if player_inventory.status != "dead":
+
+                    """ The luck portion of play function creates random losses to inventory or individual or group health."""
+                    luck = randint(1, 3)
+
+                    if luck == 1:
+                        player_inventory.theft()
+                        player_inventory.save()
+
+                    if luck == 2:
+                        player_inventory.depression()
+                        player_inventory.save()
+
+                    if luck == 3:
+                        player_inventory.rain()
+                        player_inventory.save()
+
+                    """ The landmark section of the play function creates a unique storyline based on player inv."""
+
+                    milestones = [[50, "Salem"], [37, "Eugene"], [23, "Oregon Border"], [0, "start"]]
+
+                    for x in range(len(milestones) - 1):
+                        if player_inventory.mile_counter >= milestones[x][0] and player_inventory.last_milestone == milestones[x + 1][1]:
+                            ms = Landmark(milestones[x][1], player_inventory)
+                            player_inventory.landmark = (landmarks[milestones[x][1]]["story"])
+                            player_inventory.save()
+                            print(player_inventory.landmark)
+                            player_inventory.last_milestone = milestones[x][1]
+                            player_inventory.save()
+                            landmark_outcomes(milestones[x][1], player_inventory)
+
+                    if player_inventory.mile_counter > 160:
+                        player_inventory.play_message = "You have reached the Portland metro area!"
+                        player_inventory.status = "win"
+                        player_inventory.save()
+
+            if request.POST.get("move", None) == str(2):
+                player_inventory.day_counter += 1
                 player_inventory.save()
                 for i in player_inventory.characters.all():
-                    i.description -= 20
-                    i.save()
+                    if i.description <= 100:
+                        i.description += 20
+                        i.save()
+                    if i.description > 100:
+                        i.description = 100
+                        i.save()
 
-            deaths = []
-            for i in player_inventory.characters.all():
-                if i.description <= 0:
-                    deaths.append(i)
-            print(deaths)
-            if len(deaths) > 0:
-                person = choice(deaths)
-                if person.name != "You":
-                    person.inventory = None
-                    person.save()
-                    player_inventory.death = "{} has died of hunger and exhaustion.".format(person.name)
-                    player_inventory.save()
-                    deaths.remove(person)
-                if person.name == "You":
-                    person.inventory = None
-                    person.save()
-                    player_inventory.death = "You have died of hunger and exhaustion."
-                    player_inventory.save()
-                    deaths.remove(person)
-                for i in deaths:
-                    i.description = 5
-                    i.save()
-                    print(i)
-
-
-
-            """ The luck portion of play function creates random losses to inventory or individual or group health."""
-            luck = randint(1, 3)
-
-            if luck == 1:
-                player_inventory.theft()
+            if request.POST.get("move", None) == str(3):
+                places = []
+                for i in place_list.keys():
+                    places.append(i)
+                find = choice(places)
+                player_inventory.find = ("You find " + place_list[find]["description"] + " with " + place_list[find]["find_description"] + ".")
                 player_inventory.save()
+                gain = Item.objects.create(name=place_list[find]["find_name"], inventory=player_inventory)
 
-            if luck == 2:
-                player_inventory.depression()
-                player_inventory.save()
+                #Add decision
+                #Add ability to unpack item
 
-            if luck == 3:
-                player_inventory.rain()
-                player_inventory.save()
+            return JsonResponse({
+                'message': 'success',
+                "mile_counter": player_inventory.mile_counter,
+                "day_counter": player_inventory.day_counter,
+                "play_message": player_inventory.play_message,
+                "food_warning": player_inventory.food_warning,
+                "death": player_inventory.death,
+                "happening": player_inventory.happening,
+                "find": player_inventory.find,
+                "landmark": player_inventory.landmark,
+                "status": player_inventory.status,
+            })
 
-            """ The landmark section of the play function creates a unique storyline based on player inv."""
-
-            milestones = [[50, "Salem"], [37, "Eugene"], [23, "Oregon Border"], [0, "start"]]
-
-            for x in range(len(milestones) - 1):
-                if player_inventory.mile_counter >= milestones[x][0] and player_inventory.last_milestone == milestones[x + 1][1]:
-                    ms = Landmark(milestones[x][1], player_inventory)
-                    player_inventory.landmark = (landmarks[milestones[x][1]]["story"])
-                    player_inventory.save()
-                    print(player_inventory.landmark)
-                    player_inventory.last_milestone = milestones[x][1]
-                    player_inventory.save()
-                    landmark_outcomes(milestones[x][1], player_inventory)
-
-            if player_inventory.mile_counter > 1000:
-                player_inventory.play_message = "You have reached the Portland metro area!"
-
-        if request.POST.get("move", None) == str(2):
-            player_inventory.day_counter += 1
-            player_inventory.save()
-            for i in player_inventory.characters.all():
-                if i.description <= 100:
-                    i.description += 20
-                    i.save()
-                if i.description > 100:
-                    i.description = 100
-                    i.save()
-
-        if request.POST.get("move", None) == str(3):
-            places = []
-            for i in place_list.keys():
-                places.append(i)
-            find = choice(places)
-            player_inventory.find = ("You find " + place_list[find]["description"] + " with " + place_list[find]["find_description"] + ".")
-            player_inventory.save()
-            gain = Item.objects.create(name=place_list[find]["find_name"], inventory=player_inventory)
-
-            #Add decision
-            #Add ability to unpack item
-
-        return JsonResponse({
-            'message': 'success',
-            "mile_counter": player_inventory.mile_counter,
-            "day_counter": player_inventory.day_counter,
-            "play_message": player_inventory.play_message,
-            "food_warning": player_inventory.food_warning,
-            "death": player_inventory.death,
-            "happening": player_inventory.happening,
-            "find": player_inventory.find,
-            "landmark": player_inventory.landmark,
-        })
     else:
-        return JsonResponse({'message': 'fail'})
+        return JsonResponse({'message': 'fail', "status": player_inventory.status})
 
 
 def win(request):

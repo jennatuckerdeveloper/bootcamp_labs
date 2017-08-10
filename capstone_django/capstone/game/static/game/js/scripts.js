@@ -114,8 +114,17 @@ $('#play').bind("enterKey",function(e){
            $('#find').html(data.find);
            $('#landmark').html(data.landmark);
            $('#play_message').html(data.play_message);
-           if (data.mile_counter >= 60) {
-               window.location.href = "/game/win/";
+           if (data.status === "win") {
+               $('#play').prop('disabled', true);
+               setTimeout(function() {
+                   window.location.href = "/game/win/";
+                   }, 4000)
+           }
+           if (data.status === "dead") {
+               $('#play').prop('disabled', true);
+               setTimeout(function() {
+                   window.location.href = "/game/gameplay/";
+               }, 4000)
            }
        }
    })
