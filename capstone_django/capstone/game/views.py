@@ -10,8 +10,7 @@ from random import randrange, choice, randint
 
 To do;
 
-Try/Excepts to limit options on all screens.  
-
+Packing list limited.  
 Packing limits.  
 Unpack screen.
 
@@ -22,12 +21,6 @@ Inventory view screen:  characters and items
 
 """
 
-beginning_inventory = {
-    "food": "A day's food for your team.",
-    "cd": "A cd",
-    "Bible": "A Gideon Bible",
-
-}
 
 place_list = {
     "camp":
@@ -73,25 +66,30 @@ landmarks = {"Oregon Border":
                   },
              }
 
+item_list = {'food': 'A parcel containing a day\'s food rations for your team.',
+             'Bible': 'A Gideon Bible',
+             'solar panel': 'A portable solar charging panel',
+             }
 
-"""This helper function creates the initial inventory in packing view. """
 
-
-def create_initial_inventory():
-    initial_inv = Inventory.objects.create(name="initial_inv")
-    items = []
-    for x in beginning_inventory.keys():
-        items.append(x)
-    for x in range(len(beginning_inventory)):
-        if items[x] != "food":
-            name = Item.objects.create(name=items[x], description=beginning_inventory[items[x]], inventory=initial_inv)
-        if items[x] == "food":
-            y = 0
-            while y < 5:
-                name = Item.objects.create(name=items[x], description=beginning_inventory[items[x]],
-                                           inventory=initial_inv)
-                y += 1
-    return initial_inv
+# """This helper function creates the initial inventory in packing view. """
+#
+#
+# def create_initial_inventory():
+#     initial_inv = Inventory.objects.create(name="initial_inv")
+#     items = []
+#     for x in beginning_inventory.keys():
+#         items.append(x)
+#     for x in range(len(beginning_inventory)):
+#         if items[x] != "food":
+#             name = Item.objects.create(name=items[x], description=beginning_inventory[items[x]], inventory=initial_inv)
+#         if items[x] == "food":
+#             y = 0
+#             while y < 5:
+#                 name = Item.objects.create(name=items[x], description=beginning_inventory[items[x]],
+#                                            inventory=initial_inv)
+#                 y += 1
+#     return initial_inv
 
 """This helper function creates all the place inventories and found items in play view."""
 
@@ -135,18 +133,21 @@ def gameplay(request):
 def gameplay_entry(request):
     if request.method == 'POST':
         user = User.objects.get(username=request.user.username)
+        choice = request.POST.get("choice", None)
         limit = 0
-        if request.POST.get("choice", None) == str(1):
+        if choice == str(1):
             limit = 15
-        if request.POST.get("choice", None) == str(2):
+        if choice == str(2):
             limit = 10
-        if request.POST.get("choice", None) == str(3):
+        if choice == str(3):
             limit = 5
         inv = Inventory(name="player_inv", limit=limit)
         inv.save()
         user.game = inv
         user.save()
-        return JsonResponse({'message': 'success'})
+        return JsonResponse({'message': 'success',
+                             'choice': choice
+                            })
     return JsonResponse({'message': 'fail'})
 
 #This needs a try/except to ensure it's one of these three.
@@ -189,7 +190,10 @@ def packing(request):
     This second version of the function needs a dictionary to print out the names of the items.
     """
 
-    return render(request, 'game/packing.html', {})
+    user = User.objects.get(username=request.user.username)
+    player_inventory = user.game
+
+    return render(request, 'game/packing.html', {'packed': player_inventory.items.all()})
 
 
 def packing_entry(request):
@@ -201,26 +205,66 @@ def packing_entry(request):
     if request.method == 'POST':
 
         user = User.objects.get(username=request.user.username)
-        inv = user.game
-        Item.objects.create(name=request.POST.get('choice', None), inventory=inv)
-        print(inv)
+        player_inventory = user.game
+        to_pack = request.POST.get('choice', None)
+        item_list_names = item_list.keys()
+        for item in item_list_names:
+            if to_pack == item:
+                Item.objects.create(name=item, description=item_list[item], inventory=player_inventory)
+        print(player_inventory)
+        packed = []
+        for i in player_inventory.items.all():
+            packed.append(i.name)
 
-        return JsonResponse({'message': 'success'})
+        return JsonResponse({'message': 'success', 'packed': packed})
     return JsonResponse({'message': 'fail'})
 
 
 def depart(request):
-    player_inv = Inventory.objects.create()
-    player_inventory = player_inv.items.all()
-    return render(request, 'game/depart.html', {"player_inventory": player_inventory})
+    user = User.objects.get(username=request.user.username)
+    player_inventory = user.game
+    limit = player_inventory.limit
+
+    return render(request, 'game/depart.html', {"limit": limit, 'packed': player_inventory.items.all()})
 
     #The form on this page needs to allow the user to:
         #  remove items from the pack and return them to initial_inv.
 
 def depart_entry(request):
+    user = User.objects.get(username=request.user.username)
+    player_inventory = user.game
+    limit = player_inventory.limit
+
     if request.method == 'POST':
+        print(player_inventory.items.all())
         unpack = request.POST.get("unpack", None)
-    return JsonResponse({"unpack": unpack})
+        print(unpack)
+        for i in player_inventory.items.all():
+            if i.name == unpack:
+                i.inventory = None
+                i.save()
+                break
+        packed = []
+        for i in player_inventory.items.all():
+            packed.append(i.name)
+
+        return JsonResponse({'message': 'success', 'packed': packed, 'limit': limit})
+    return JsonResponse({'message': 'fail'})
+
+def depart_check(request):
+
+    if request.method == 'POST':
+
+        user = User.objects.get(username=request.user.username)
+        player_inventory = user.game
+        limit = player_inventory.limit
+        packed_items = []
+        for i in player_inventory.items.all():
+            packed_items.append(i.name)
+        packed = len(packed_items)
+
+        return JsonResponse({'message': 'success', 'limit': limit, 'packed': packed})
+    return JsonResponse({'message': 'fail'})
 
 
 def play(request):

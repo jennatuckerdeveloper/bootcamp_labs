@@ -14,13 +14,20 @@
     <link rel="stylesheet" type="text/css" href="{% static 'game/css/styles.css' %}">
     <p>Before you head out, you have to decide what to bring.</p>
     <p>You have the following stores to choose from: </p>
-    <!--<ul>-->
-    <!--{% for x in initial_inventory.items.all %}-->
-        <!--<li>{{x.name}}</li>-->
-    <!--{% endfor %}-->
-    <!--</ul>-->
+    <ul id="bags">
+        <li>food (each provides a day's food for your team)</li>
+        <li>solar panel (each folding panel provides energy for your GPS device)</li>
+        <li>Bible (a readable copy of the Christian Bible)</li>
+
+    </ul>
     <p>What do you want to pack?</p>
     <input type="text" id="pack"> <br>
+    <p>You have set aside the following to pack: </p>
+    <ul id = "to_pack">
+    {% for x in packed %}
+        <li>{{x.name}}</li>
+    {% endfor %}
+    </ul>
     <p>Finished packing</p>
     <button id="done">Finished</button>
     {% endblock %}
