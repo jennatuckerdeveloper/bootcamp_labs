@@ -1,21 +1,10 @@
 {% extends 'base.html' %}
-<!DOCTYPE html>
-<html>
-<head>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'game/css/styles.css' %}">
 
-    {% block head %}
-    <title>Win!</title>
-    {% endblock %}
+{% block head %}
+<title>Win!</title>
+{% endblock %}
 
-</head>
-<body>
 
-    {% block body %}
-    <p>You have reached Portland!</p>
-    {% endblock %}
-
-</body>
-
-</html>
+{% block body %}
+<p>You have reached Portland!</p>
+{% endblock %}

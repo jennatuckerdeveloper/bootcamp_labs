@@ -6,14 +6,11 @@ PDX Trail is an educational game designed as a parody of the beloved educational
 
 
 #### Specific Functionality:
-Intro Screen:
-  - Title
-  - Maker and date
-  - First menu: Play, Learn, Wall of Names, Exit
-  - Enter choice __
 
- Gameplay Screen:
-  - You can go as:
+User Log In:
+  - User chooses a name and password
+  
+Gameplay Screen:
   - Character / difficulty level choices
   - Enter choice __
   - User choice determines the maximum size of inventory
@@ -21,108 +18,68 @@ Intro Screen:
 Names Screen:
   - You will lead a team of four others.
   - Enter name 2-5 __
-  - Are these names correct? __ y/n
-
-Inventory Explained Page
-  - explains inventory (no user inputs)
-
-Inventory Overview Page
-  - summary of inventory items and empty spaces by category
-  - user blocked from departure if overpacked
-  - user can choose to unpack items
-
+  
 Pack Screen
   - list of available items by category
-  - users can choose to pack items
-  - user returns to Inventory Overview Page
+  - users can choose items to pack from a list 
+
+Depart Screen
+  - user blocked from departure if overpacked
+  - user can choose to unpack items
+  - user can go back and pack more items 
 
 Play Screen
-  - summary of health of team members
-  - Play menu:  Walk on, Take some rest, Scavenge/forage, search through packs, Look at the map
-
-Traveling Screen
-  - **if one graphic, place here**
-  - automatic traveling: health, day count, mile count, miles to a landmark
-  - press enter to return to play screen
-  - randomized happenings: good luck and bad luck
-
-Landmark Story Screen
-  - each landmark will have a unique section of story
-
-Landmark Unique Game Play Screen
-  - user choices that will affect health and inventory
-
-Map of Trail with Landmarks
-
-Final Win Screen
-  - Last landmark.
-  - Last menu:  See wall of names. Enter on wall of names.
-
-Wall of Names Entry Scree
-  - add user name, names of those lost, and a character-limited user message
-  - show user entered wall of names
-
-Wall of Names
-  - displays user entered names and messages
-
+  - summary of days and miles traveled 
+  - Play menu:  Walk on, Take some rest, Scavenge/forage, Search through packs
+  - walk on: changes day count, mile count, miles to a landmark
+  - randomized happenings affect inventory, single character, or multiple characters 
+  - landmarks will have a unique section of story
+  - finds add to inventory 
+  - gives notice if characters die 
+  - ends game if user character "You" dies 
 
 #### Data Model:
 
-Game:
-  - game state 
+User:
+  - FK to Inventory to create a game
 
-Team:
-  - names of characters 
-  - health 
-  - status 
+Inventory:
+  - name 
+  - status to end game 
+  - limit to limit inventory 
+  - mile_counter, day_counter, last_milestone records
+  - food_warning, death, happening, landmark, find, play_message to message user 
 
-Game survivor:  
-  - Player name (entered by user here)
-  - Names of travelers who survived on user's team 
-  - Names of travelers who died (automatically generated)
-  - Message with brief character limit (entered by user here)
+Character:
+    - name 
+    - description for health score 
+    - FK to inventory to link to game 
+    
+Item:  
+  - name, description
+  - FK to Inventory to create item inventory / game 
+  = FK to Landmark to allow items to be lost at landmarks 
   
+Landmark:
+    - name 
 
 #### Technical Components:
 
-Python backend / control flow:
-    Character class:
-        Creates characters with unique names and health scores.
-    Item class:
-        Creates inventory items with type attribute "item" and unique names and descriptions.
-    Food class:
-        Child of Item class that includes standard name and description.
-    Inventory class:
-        Houses all five characters during game play.
-        Creates the player's inventory with a specific limit.
-        Holds pack and unpack functions to take and remove items.
-    Place class:
-        Creates a list places with names and corresponding inventories to discovery while scavenging/foraging.
-    Occurrence class:
-        Creates a loss to either a single character, every character, or the player's inventory.
-
-Gameplay:
-  - characters and player inventory
-  - calls random experiences
-  - controls game play
-  - removes characters from inventory and prompts user when they die
-
+Python:
+   - Helper functions in views.py file to support gameplay 
 
 Javascript web interface:
-  - allows user to enter: character names, choices, navigate play screens, enter name & message on wall
-  - possibly helps animate graphics
+  - Allows user to enter: character names, choices, plays
+  - Manages Ajax calls to link database and UI 
+  - Sends user to next play screen 
 
 Django:
-  - Allow user to enter four player names 
-  - Save player names in database and post summary of those who survived and died to wall if they win the game
-  - Allow the user to enter their name and messages on the wall 
+  - Allows user to log in 
+  - Creates webpages
+  - Communicates with database 
 
 HTML / CSS:
   - Modifies what the player sees from plain text into organized gameplay menus and screens with graphics.
-  - Animates simple graphics.
-
-Unanswered:
-  - What determines when the screens switch / what fills a single screen?  HMTL/CSS?
 
 
 #### Schedule:
@@ -168,53 +125,35 @@ Prompt choice for game play character/difficulty
 
 **Third Layer:** (approx 2 days)
     User Interface:
-        Separate screens as they will be presented to user.
-        Set up both automatic and user-driven movement among screens.
-        Connect Python and JS interface.  Django?
-        
-        Refactor into Django:
+        Create Django project and app 
         Turn Python objects into models 
+        
 
 **Fourth Layer:** (approx 4 days)
-    Design basic layout and aesthetic of screens.
-    Find a map and mark 12 milestones.
+    Translate gameplay from pure Python into Django in views.py.
+    Create User model.  
 
-
-**Fifth Layer:** (approx 5 days)
-Build out game:
-  Milestones:
-  - 12 unique landmarks/milestones with story segments and unique gameplay (include river crossings)
-  - Create unique inventory items and ensure they will be found at certain milestones.
-  - Do research.
-  - Get external support.
-
-Create "Learn about the trail/game page.
-
-Places: 24 at least with inventories.
-
- Occurrences: 12 at least.  3 rarities.
-
-**Bonus:  Sixth layer:** (approx 3 days)
-
-Design and simple travel graphic.
-
+**Fifth Layer:** (approx 4 days)
+    Set up Ajax calls and connect user inputs and database through functions.  
+    Debug game.  
+    
+**Sixth Layer:** (approx 1 day)
+    Mimic original game aesthetic using CSS.   
 
 
 #### Functionality Beyond An MVP:
-   Link up to songs.
+  Limit inventory even during finds.  
+  Allow user to choose whether to take finds.
+  Allow user to drop items.  
   **Basic travel screen graphic.**
+  **Build out story** 
+  Link up to songs.
   Date with day counter.  Could likely use an external calendar.
   Clues/pauses to stop and forage/scavenge.
   More static graphics.
   More animations.
-  Unique Landmark Story & Game Play specific to character / difficulty choice.
   Option to select a start date.
     Variable adjusted for weather that's too early or too late, too wet/cold or
     dry/hot.
   Option to adjust pace.
-  Choices at forks in trail, two paths.
-
-NEXT TO DO:
-Create a Game model.
-Begin to link up the gameplay.
-Remember to go to those commented out instantiations in views.py. 
+  Choices at forks in trail, two paths. 

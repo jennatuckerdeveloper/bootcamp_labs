@@ -12,6 +12,9 @@ class Character(models.Model):
     The __str__ function prints a readable description of characters' health status.
     """
 
+    def describe(self):
+        return self.__str__()
+
     def __str__(self):
         if self.name == "You":
             if 0 < self.description <= 25:
@@ -49,7 +52,6 @@ The Item class creates Items with unique names and descriptions and a default ty
 class Item(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
-    type = models.CharField(max_length=100, default="item")
     inventory = models.ForeignKey("Inventory", related_name="items", blank=True, null=True)
     landmark = models.ForeignKey("Landmark", related_name="landmark", blank=True, null=True)
 
@@ -61,28 +63,6 @@ class Item(models.Model):
 
     """
     Prints the item's name when the Item is printed in a list.  
-    """
-    def __repr__(self):
-        return self.name
-        # return self.__str__()
-
-"""
-Food Items have a default name, description, and type.
-"""
-
-
-class Food(models.Model):
-    name = models.CharField(max_length=100, default="Food")
-    description = models.CharField(max_length=300, default="A day's food for your group.")
-    type = models.CharField(max_length=100, default="food")
-    """
-    Prints a readable version of the Item's name: description.
-    """
-    def __str__(self):
-        return "{}: {}".format(self.name, self.description)
-
-    """
-    Prints the item's name when the Item is printed in a list.
     """
     def __repr__(self):
         return self.name
@@ -193,8 +173,3 @@ class Landmark(models.Model):
     The will have a name based on the place.
     Items will be systematically generated and connected to Landmarks by FK.
     """
-
-class Game(models.Model):
-    user = models.ForeignKey(User, related_name="user")
-    inventory = models.ForeignKey("Inventory", related_name="player_inv")
-

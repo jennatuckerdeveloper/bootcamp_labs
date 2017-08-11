@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.http import HttpResponse
-from .models import Item, Inventory, Character, Landmark, Game
+from .models import Item, Inventory, Character, Landmark
 from authentication.models import User
 from django.http import JsonResponse
 from random import randrange, choice, randint
@@ -8,16 +8,12 @@ from random import randrange, choice, randint
 
 """
 
-To do;
+From play screen 3) Scavenge / forage: 
+    check limit 
+    ability to drop items
+    abililty to choose 
 
-Packing list limited.  
-Packing limits.  
-Unpack screen.
-
-Inventory view screen:  characters and items 
-
-*Does all info go into the database?  Or can info be generated in the view, put into the 
-    context dictionary, and brought into to the template?  
+Put limit of 5 characters.  
 
 """
 
@@ -320,6 +316,14 @@ def play_entry(request):
         player_inventory.find = ""
         player_inventory.save()
 
+        characters = []
+        for i in player_inventory.characters.all():
+            characters.append(i.name + " : " + i.describe())
+
+        packs = []
+        for i in player_inventory.items.all():
+            packs.append(i.name + " : " + i.description)
+
         """
         The day_counter and mile_counter track each play and a day's food is lost.  
         """
@@ -431,6 +435,7 @@ def play_entry(request):
                 #Add decision
                 #Add ability to unpack item
 
+
             return JsonResponse({
                 'message': 'success',
                 "mile_counter": player_inventory.mile_counter,
@@ -442,6 +447,8 @@ def play_entry(request):
                 "find": player_inventory.find,
                 "landmark": player_inventory.landmark,
                 "status": player_inventory.status,
+                "characters": characters,
+                "packs": packs,
             })
 
     else:

@@ -1,30 +1,21 @@
 {% extends 'base.html' %}
-<!DOCTYPE html>
-<html>
-<head>
-    {% block head %}
-    <title>PDX Trail</title>
-    {% endblock %}
-</head>
-<body>
 
-    {% block body %}
+{% block head %}
+<title>PDX Trail</title>
+{% endblock %}
 
-    <p>Welcome to PDX Trail!</p>
+{% block body %}
 
-    <p>You will lead a team of five to Portland.<p/>
-    <p>Do you want to be: </p>
-    <p>
-        1.  A homesteader with a packing lama. <br>
-        2.  A former tech worker with lots of camping gear. <br>
-        3.  A confident person with scavenged gear. <br>
-    </p>
-    <input type="text" id="gameplay" maxlength="1">
-    <p class="try_again"></p>
+<p>Welcome to PDX Trail!</p>
 
-    {% endblock %}
+<p>You will lead a team of five to Portland.<p/>
+<p>Do you want to be: </p>
+<p>
+    1. A homesteader with a packing lama. <br>
+    2. A former tech worker with lots of camping gear. <br>
+    3. A confident person with scavenged gear. <br>
+</p>
+<input type="text" id="gameplay" maxlength="1">
+<p class="try_again"></p>
 
-
-</body>
-
-</html>
+{% endblock %}

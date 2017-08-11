@@ -1,33 +1,21 @@
 {% extends 'base.html' %}
-<!DOCTYPE html>
-<html>
-<head>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'game/css/styles.css' %}">
 
-    {% block head %}
-    <title>Your Team</title>
-    {% endblock %}
-
-</head>
-<body>
-
-    {% block body %}
-    <p>You will lead your team.</p>
-
-    <p>Choose a second character name: </p>
-    <input type="text" id="name2"> <br>
-    <p>Choose a third character name: </p>
-    <input type="text" id="name3"> <br>
-    <p>Choose a fourth character name: </p>
-    <input type="text" id="name4"> <br>
-    <p>Choose a fifth character name: </p>
-    <input type="text" id="name5">
-    <button id="names">Enter Names</button>
-    <p id="retry"></p>
-    {% endblock %}
+{% block head %}
+<title>Your Team</title>
+{% endblock %}
 
 
-</body>
+{% block body %}
+<p>You will lead your team.</p>
 
-</html>
+<p>Choose a second character name: </p>
+<input type="text" id="name2"> <br>
+<p>Choose a third character name: </p>
+<input type="text" id="name3"> <br>
+<p>Choose a fourth character name: </p>
+<input type="text" id="name4"> <br>
+<p>Choose a fifth character name: </p>
+<input type="text" id="name5">
+<button id="names">Enter Names</button>
+<p id="retry"></p>
+{% endblock %}

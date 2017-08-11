@@ -131,7 +131,7 @@ $('#play').bind("enterKey", function (e) {
 
     var move = $('#play').val();
 
-    if (move === "1" || move === "2" || move === "3" || move === "4" || move === "5") {
+    if (move === "1" || move === "2" || move === "3" || move === "5") {
 
         $.ajax({
             type: 'POST',
@@ -141,6 +141,8 @@ $('#play').bind("enterKey", function (e) {
             },
             success: function (data) {
                 console.log(data);
+                $('#inventory').hide();
+                $('#game_info').show();
                 $('#day_counter').html(data.day_counter);
                 $('#mile_counter').html(data.mile_counter);
                 $('#food_warning').html(data.food_warning);
@@ -162,6 +164,31 @@ $('#play').bind("enterKey", function (e) {
                     }, 4000)
                 }
             }
+        })
+    }
+
+    if (move === "4") {
+
+        $.ajax({
+            type: 'POST',
+            url: '/game/play_entry/',
+            data: {
+                move: move
+            },
+            success: function (data) {
+                console.log(data);
+                $('#game_info').hide();
+                $('#inventory').show();
+                $('#char').html("Here is an overview of your team:");
+                $.each(data.characters, function (index, ob) {
+                    $('#characters').append("<li>" + ob + "</li>")
+                });
+                $('#tems').html("Here is what is in your packs:");
+                $.each(data.packs, function (index, ob) {
+                    $('#items').append("<li>" + ob + "</li>")
+                })
+            }
+
         })
     }
 });

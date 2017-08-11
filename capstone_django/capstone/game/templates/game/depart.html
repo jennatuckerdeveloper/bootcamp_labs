@@ -1,32 +1,22 @@
 {% extends 'base.html' %}
-<!DOCTYPE html>
-<html>
-<head>
-    {% block head %}
-    <title>Depart</title>
-    {% endblock %}
-</head>
-<body>
-    {% block body %}
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'game/css/styles.css' %}">
-    <p>Your packs can hold <span id="limit">{{ limit }}</span> items.</p>
-    <p>You have the following set aside to pack:</p>
-    <ol id="pack_final">
-    {% for x in packed %}
-        <li>{{x.name}}</li>
-    {% endfor %}
-    </ol>
-    <p>Enter items not to pack:</p>
-    <input type="text" id="unpack"> <br>
-    <p>Go back and gather more items to pack.</p>
-        <button id="gotopack">Return To Pack</button>
-    <p>Read to depart?</p>
-    <button id="depart">Ready</button>
-    <p id="overfilled"></p>
-    {% endblock %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-{% load static %}
-</body>
 
-</html>
+{% block head %}
+<title>Depart</title>
+{% endblock %}
+
+{% block body %}
+<p>Your packs can hold <span id="limit">{{ limit }}</span> items.</p>
+<p>You have the following set aside to pack:</p>
+<ol id="pack_final">
+    {% for x in packed %}
+    <li>{{x.name}}</li>
+    {% endfor %}
+</ol>
+<p>Enter items not to pack:</p>
+<input type="text" id="unpack"> <br>
+<p>Go back and gather more items to pack.</p>
+<button id="gotopack">Return To Pack</button>
+<p>Read to depart?</p>
+<button id="depart">Ready</button>
+<p id="overfilled"></p>
+{% endblock %}
