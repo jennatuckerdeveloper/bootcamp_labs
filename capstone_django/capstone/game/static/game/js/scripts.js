@@ -155,13 +155,13 @@ $('#play').bind("enterKey", function (e) {
                     $('#play').prop('disabled', true);
                     setTimeout(function () {
                         window.location.href = "/game/win/";
-                    }, 4000)
+                    }, 8000)
                 }
                 if (data.status === "dead") {
                     $('#play').prop('disabled', true);
                     setTimeout(function () {
                         window.location.href = "/game/gameplay/";
-                    }, 4000)
+                    }, 8000)
                 }
             }
         })

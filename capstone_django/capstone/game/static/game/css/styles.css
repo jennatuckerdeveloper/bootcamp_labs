@@ -2,6 +2,7 @@ body {
     background: black;
     color: #ffffff;
     font-family: Courier;
+    margin: 30px;
 }
 
 #welcome, #win {
@@ -14,12 +15,13 @@ body {
     width: 100vw;
 }
 
-#try_again, #retry, #limit {
+#try_again, #retry, #limit, #overfilled {
     color: darkred;
 }
 
 #menu, #menu2, #menu3, #menu4, #menu5 {
     font-size: 1.5em;
+    margin: 30px;
 }
 
 #gameplay, #name2, #name3, #name4, #name5 {
@@ -79,7 +81,7 @@ textarea:focus, input:focus{
     text-align: center;
 }
 
-#gm {
+#gm, #pack_final{
     margin-left: 25px;
 }
 

@@ -5,7 +5,6 @@ from authentication.models import User
 from django.http import JsonResponse
 from random import randrange, choice, randint
 
-
 """
 
 From play screen 3) Scavenge / forage: 
@@ -16,7 +15,6 @@ From play screen 3) Scavenge / forage:
 Put limit of 5 characters.  
 
 """
-
 
 place_list = {
     "camp":
@@ -34,31 +32,32 @@ place_list = {
          "find_name": "cd",
          "find_description": "a cd"
          }
-            }
+}
 
 landmarks = {"Oregon Border":
-                 {"story": "You have reached the Oregon Border.  You make camp on... ",
-                  "key": "Bible",
-                  "gain": "food",
-                  "loss": "food",
-                  "story_loss": "You lose one day's food.",
-                  "story_gain": "After finding the Bible in your packs, the group allows you to rest on their land and offers you a gift of food to help you on your way."
-                  },
+                 {
+                     "story": "You have reached the Oregon Border.  You accidentally make camp on private property owned by a separatist religous group.",
+                     "key": "Bible",
+                     "gain": "food",
+                     "loss": "food",
+                     "story_loss": "The group asks for a tithe of your food stores.  You lose one day's food.",
+                     "story_gain": "After finding a Bible in your packs, the group allows you to rest on their land and offers you a gift of food to help you on your way."
+                     },
              "Eugene":
-                 {"story": "You have reached Eugene.  You run into another party of campers...",
+                 {"story": "You have reached Eugene.  You run into another party of campers.  They have fallen on especially hard times.",
                   "key": "Bible",
                   "gain": "cd",
                   "loss": "food",
                   "story_loss": "You give them one day's food.",
-                  "story_gain": "You receive a CD.",
+                  "story_gain": "They give you a cd from a stash they found scavening in an abandoned trailer, since the full load is too heavy to carry."
                   },
              "Salem":
-                 {"story": "You have reached Salem.  A homesteader gives your party beer...",
+                 {"story": "You have reached Salem.  A homesteader lets your party stay on their land and taps a keg of homebrew.",
                   "key": "Bible",
                   "gain": "book",
                   "loss": "food",
                   "story_loss": "You lose a day's food throwing up.",
-                  "story_gain": "You receive a book.",
+                  "story_gain": "You are given a book on identifying edible wild mushrooms.",
                   },
              }
 
@@ -66,7 +65,6 @@ item_list = {'food': 'A parcel containing a day\'s food rations for your team.',
              'Bible': 'A Gideon Bible',
              'solar panel': 'A portable solar charging panel',
              }
-
 
 # """This helper function creates the initial inventory in packing view. """
 #
@@ -89,11 +87,12 @@ item_list = {'food': 'A parcel containing a day\'s food rations for your team.',
 
 """This helper function creates all the place inventories and found items in play view."""
 
+
 def create_place_inventories(place_inventory):
     places = place_list.keys()
     for place in places:
         find = Item.objects.create(name=place, description=place_list[place],
-                                       inventory=place_inventory)
+                                   inventory=place_inventory)
 
 
 def landmark_outcomes(name, player_inventory):
@@ -121,7 +120,6 @@ def landmark_outcomes(name, player_inventory):
         player_inventory.play_message = milestone["story_loss"]
 
 
-
 def gameplay(request):
     return render(request, 'game/gameplay.html', {})
 
@@ -143,17 +141,17 @@ def gameplay_entry(request):
         user.save()
         return JsonResponse({'message': 'success',
                              'choice': choice
-                            })
+                             })
     return JsonResponse({'message': 'fail'})
 
-#This needs a try/except to ensure it's one of these three.
+
+# This needs a try/except to ensure it's one of these three.
 
 def names(request):
-     return render(request, 'game/names.html', {})
+    return render(request, 'game/names.html', {})
 
 
 def names_entry(request):
-
     if request.method == 'POST':
         user = User.objects.get(username=request.user.username)
         inv = user.game
@@ -172,7 +170,8 @@ def show_game(request):
     user = User.objects.get(username=request.user.username)
     return render(request, 'pages/show_game.html', {'user': user})
 
-#What is this function for?  Testing?
+
+# What is this function for?  Testing?
 
 
 
@@ -180,8 +179,8 @@ def show_game(request):
 The first version of packing and packing_entry created an initial inventory and changed inv to player inv.
 """
 
-def packing(request):
 
+def packing(request):
     """
     This second version of the function needs a dictionary to print out the names of the items.
     """
@@ -193,7 +192,6 @@ def packing(request):
 
 
 def packing_entry(request):
-
     """
     This second version of the view function will need a dictionary to fill out descriptions.
     This or the next two functions need to set limit on player_inventory items.
@@ -223,8 +221,9 @@ def depart(request):
 
     return render(request, 'game/depart.html', {"limit": limit, 'packed': player_inventory.items.all()})
 
-    #The form on this page needs to allow the user to:
-        #  remove items from the pack and return them to initial_inv.
+    # The form on this page needs to allow the user to:
+    #  remove items from the pack and return them to initial_inv.
+
 
 def depart_entry(request):
     user = User.objects.get(username=request.user.username)
@@ -247,8 +246,8 @@ def depart_entry(request):
         return JsonResponse({'message': 'success', 'packed': packed, 'limit': limit})
     return JsonResponse({'message': 'fail'})
 
-def depart_check(request):
 
+def depart_check(request):
     if request.method == 'POST':
 
         user = User.objects.get(username=request.user.username)
@@ -264,7 +263,6 @@ def depart_check(request):
 
 
 def play(request):
-
     """This one is the heart of the game.
     Template:
         display mile_counter and day_counter (Do they need to be in the database to show in template?
@@ -302,7 +300,6 @@ def play(request):
 
 
 def play_entry(request):
-
     user = User.objects.get(username=request.user.username)
     player_inventory = user.game
 
@@ -366,7 +363,7 @@ def play_entry(request):
                     if person.name == "You":
                         person.inventory = None
                         person.save()
-                        player_inventory.death = "You have died of hunger and exhaustion."
+                        player_inventory.death = "You have died of melancholy."
                         player_inventory.save()
                         deaths.remove(person)
                         player_inventory.status = "dead"
@@ -379,7 +376,7 @@ def play_entry(request):
                 if player_inventory.status != "dead":
 
                     """ The luck portion of play function creates random losses to inventory or individual or group health."""
-                    luck = randint(1, 3)
+                    luck = randint(1, 5)
 
                     if luck == 1:
                         player_inventory.theft()
@@ -395,10 +392,11 @@ def play_entry(request):
 
                     """ The landmark section of the play function creates a unique storyline based on player inv."""
 
-                    milestones = [[50, "Salem"], [37, "Eugene"], [23, "Oregon Border"], [0, "start"]]
+                    milestones = [[100, "Salem"], [60, "Eugene"], [30, "Oregon Border"], [0, "start"]]
 
                     for x in range(len(milestones) - 1):
-                        if player_inventory.mile_counter >= milestones[x][0] and player_inventory.last_milestone == milestones[x + 1][1]:
+                        if player_inventory.mile_counter >= milestones[x][0] and player_inventory.last_milestone == \
+                                milestones[x + 1][1]:
                             ms = Landmark(milestones[x][1], player_inventory)
                             player_inventory.landmark = (landmarks[milestones[x][1]]["story"])
                             player_inventory.save()
@@ -428,13 +426,13 @@ def play_entry(request):
                 for i in place_list.keys():
                     places.append(i)
                 find = choice(places)
-                player_inventory.find = ("You find " + place_list[find]["description"] + " with " + place_list[find]["find_description"] + ".")
+                player_inventory.find = (
+                "You find " + place_list[find]["description"] + " with " + place_list[find]["find_description"] + ".")
                 player_inventory.save()
                 gain = Item.objects.create(name=place_list[find]["find_name"], inventory=player_inventory)
 
-                #Add decision
-                #Add ability to unpack item
-
+                # Add decision
+                # Add ability to unpack item
 
             return JsonResponse({
                 'message': 'success',
