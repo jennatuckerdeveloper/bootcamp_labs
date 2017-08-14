@@ -12,7 +12,7 @@ $('#gameplay').bind("enterKey", function (e) {
             if (data.choice === "1" || data.choice === "2" || data.choice === "3") {
                 window.location.href = "/game/names/";
             } else {
-                $('.try_again').html("Please choose from menu.")
+                $('#try_again').html("Please choose from menu.")
             }
         }
     })

@@ -6,16 +6,19 @@
 
 {% block body %}
 
-<p>Welcome to PDX Trail!</p>
-
-<p>You will lead a team of five to Portland.<p/>
+<div id="page1">
+<p><span id="welcome">Welcome to PDX Trail!</span></p>
+<span id="menu">
+<p>You will lead a team of five to Portland.</p>
 <p>Do you want to be: </p>
-<p>
+<ul>
     1. A homesteader with a packing lama. <br>
     2. A former tech worker with lots of camping gear. <br>
     3. A confident person with scavenged gear. <br>
-</p>
+</ul>
 <input type="text" id="gameplay" maxlength="1">
-<p class="try_again"></p>
+<p id="try_again"></p></span>
+
+</div>
 
 {% endblock %}

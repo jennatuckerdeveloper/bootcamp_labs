@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block body %}
+<div id="menu5">
 <div id="game_info">
     <p><span id="day_counter">{{ day_counter }}</span> days on the trail.</p>
     <p><span id="mile_counter">{{ mile_counter }}</span> miles travelled.</p>
@@ -27,12 +28,13 @@
 </div>
 <div id="game_menu">
     <p> What do you want to do? </p>
-    <p>
+    <p id="gm">
         1) Walk on. <br>
         2) Take some rest. <br>
         3) Scavenge / forage nearby area. <br>
         4) Search through packs. <br>
     </p>
-    <input type="text" id="play"> <br>
+    <input type="text" id="play" maxlength="1"> <br>
+</div>
 </div>
 {% endblock %}

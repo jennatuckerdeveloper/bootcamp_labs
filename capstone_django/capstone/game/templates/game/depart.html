@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block body %}
+<div id="menu4">
 <p>Your packs can hold <span id="limit">{{ limit }}</span> items.</p>
 <p>You have the following set aside to pack:</p>
 <ol id="pack_final">
@@ -14,9 +15,10 @@
 </ol>
 <p>Enter items not to pack:</p>
 <input type="text" id="unpack"> <br>
-<p>Go back and gather more items to pack.</p>
+<p>Need to go back and gather more items to pack?</p>
 <button id="gotopack">Return To Pack</button>
 <p>Read to depart?</p>
 <button id="depart">Ready</button>
 <p id="overfilled"></p>
+</div>
 {% endblock %}

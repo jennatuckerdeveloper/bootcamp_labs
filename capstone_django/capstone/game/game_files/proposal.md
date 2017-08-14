@@ -128,7 +128,6 @@ Prompt choice for game play character/difficulty
         Create Django project and app 
         Turn Python objects into models 
         
-
 **Fourth Layer:** (approx 4 days)
     Translate gameplay from pure Python into Django in views.py.
     Create User model.  
